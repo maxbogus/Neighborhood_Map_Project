@@ -1,78 +1,42 @@
 function initMap() {
-    var uluru = {lat: -25.363, lng: 131.044};
-    var uluru1 = {lat: -24.6583138, lng: 128.7494965};
-    var uluru2 = {lat: -23.363, lng: 135.044};
-    var uluru3 = {lat: -26.6583138, lng: 127.7494965};
-    var uluru4 = {lat: -22.363, lng: 138.044};
-    var uluru5 = {lat: -27.6583138, lng: 140.7494965};
     var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 4,
-        center: uluru
+        zoom: 12,
+        center: initialCats[0]
     });
     var marker = new google.maps.Marker({
-        position: uluru,
+        position: initialCats[0],
         map: map
     });
     var marker1 = new google.maps.Marker({
-        position: uluru1,
+        position: initialCats[1],
         map: map
     });
     var marker2 = new google.maps.Marker({
-        position: uluru2,
+        position: initialCats[2],
         map: map
     });
     var marker3 = new google.maps.Marker({
-        position: uluru3,
+        position: initialCats[3],
         map: map
     });
     var marker4 = new google.maps.Marker({
-        position: uluru4,
+        position: initialCats[4],
         map: map
     });
     var marker5 = new google.maps.Marker({
-        position: uluru5,
+        position: initialCats[5],
         map: map
     });
 }
 
 var initialCats = [
-    {
-        clickCount: 0,
-        name: "Alisa",
-        imgSrc: "img/cat_1.jpg",
-        imgAttribution: "none",
-        nicknames: ['T-Bone', 'Fluffy', 'Warrior']
-    }, {
-        clickCount: 0,
-        name: "Boris",
-        imgSrc: "img/cat_2.jpg",
-        imgAttribution: "none",
-        nicknames: ['Architect']
-    }, {
-        clickCount: 0,
-        name: "Twins",
-        imgSrc: "img/cat_3.jpg",
-        imgAttribution: "none",
-        nicknames: ['Killers']
-    }, {
-        clickCount: 0,
-        name: "Ball",
-        imgSrc: "img/cat_4.jpg",
-        imgAttribution: "none",
-        nicknames: ['Papper']
-    }, {
-        clickCount: 0,
-        name: "Phillip",
-        imgSrc: "img/cat_5.jpg",
-        imgAttribution: "none",
-        nicknames: ['Phil']
-    }, {
-        clickCount: 0,
-        name: "Max",
-        imgSrc: "img/cat_6.jpg",
-        imgAttribution: "none",
-        nicknames: ['ZZzzzzzZZZzzz']
-    }];
+    {lat: 55.706770, lng: 37.625883},
+    {lat: 55.815230, lng: 37.573992},
+    {lat: 55.874736, lng: 37.588088},
+    {lat: 55.749884, lng: 37.654274},
+    {lat: 55.708177, lng: 37.654653},
+    {lat: 55.740228, lng: 37.625539}
+];
 
 var Cat = function (data) {
     this.clickCount = ko.protectedObservable(data.clickCount);
