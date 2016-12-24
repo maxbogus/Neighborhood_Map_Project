@@ -206,14 +206,13 @@ var MapObject = function (data) {
 var ViewModel = function () {
     var self = this;
     this.mapObjectList = ko.observableArray([]);
-
     this.userInput = ko.observable('');
-
-    this.filterMarkers = function () {
-        console.log(this.userInput());
-    };
 
     initialMapObjects.forEach(function (mapItem) {
         self.mapObjectList.push(new MapObject(mapItem))
     });
+
+    this.filterMarkers = function () {
+        console.log(this.userInput());
+    };
 };
