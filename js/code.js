@@ -207,6 +207,8 @@ var ViewModel = function () {
     var self = this;
     this.mapObjectList = ko.observableArray([]);
     this.userInput = ko.observable('');
+    this.hasError = ko.observable(true);
+    this.error = ko.observable('error');
 
     initialMapObjects.forEach(function (mapItem) {
         self.mapObjectList.push(new MapObject(mapItem))
