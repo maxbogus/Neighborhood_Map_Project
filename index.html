@@ -18,19 +18,19 @@
     </div>
     <br>
     <div class="row">
-        <form class="form-inline">
-            <div class="form-group">
-                <label class="sr-only" for="exampleInputEmail3">Search</label>
-                <input type="search" class="form-control" id="search" placeholder="Search"
-                       data-bind="value: userInput"/>
-                <button type="submit" class="btn btn-default" data-bind="click: filterMarkers">Search</button>
+        <div class="col-xs-12 col-sm-4">
+            <form class="form-inline ">
+                <div class="form-group">
+                    <label class="sr-only" for="exampleInputEmail3">Search</label>
+                    <input type="search" class="form-control" id="search" placeholder="Search"
+                           data-bind="value: userInput"/>
+                    <button type="submit" class="btn btn-default" data-bind="click: filterMarkers">Search</button>
+                </div>
+            </form>
+            <br>
+            <div class="list-group " data-bind="foreach: mapObjectList">
+                <button type="button" class="list-group-item" data-bind="text: name"></button>
             </div>
-        </form>
-    </div>
-    <br>
-    <div class="row">
-        <div class="list-group col-xs-12 col-sm-4" data-bind="foreach: mapObjectList">
-            <button type="button" class="list-group-item" data-bind="text: name"></button>
         </div>
         <div id="map" class="col-sm-8"></div>
     </div>
