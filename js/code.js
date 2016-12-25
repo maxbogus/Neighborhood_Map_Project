@@ -149,6 +149,7 @@ ko.bindingHandlers.googleMap = {
                 // The anchor for this image is the base of the flagpole at (0, 32).
                 anchor: new google.maps.Point(0, 32)
             };
+
             var marker = new google.maps.Marker({
                 position: latLng,
                 draggable: true,
@@ -172,8 +173,10 @@ ko.bindingHandlers.googleMap = {
 
             marker.addListener('click', toggleBounce);
 
+            var content = loadData(mapItem.name());
+
             var infowindow = new google.maps.InfoWindow({
-                content: mapItem.content(),
+                content: mapItem.content() + content,
                 maxWidth: 500
             });
 
@@ -242,34 +245,38 @@ $.ajax({
     }
 });
 
-function loadData() {
-    var url = "//api.nytimes.com/svc/search/v2/articlesearch.json?q=" + city + '&sort=newest';
+function loadData(name) {
+    var url = "//api.nytimes.com/svc/search/v2/articlesearch.json?q=" + name + '&sort=newest';
     url += '&' + $.param({
             'api-key': "244fe31313e34cf482ca66e34a351ed3"
         });
 
     //mediawiki
-    var url_mediawiki = '//en.wikipedia.org/w/api.php?action=opensearch&search=' + city + '&format=json&callback=?';
+    var url_mediawiki = '//en.wikipedia.org/w/api.php?action=opensearch&search=' + name + '&format=json&callback=?';
+
+    var nyTymesResult = '';
 
     $.ajax({
         url: url,
         method: 'GET'
     }).done(function (result) {
-        $nytHeaderElem.text('New York Times Articles About ' + city);
+        nyTymesResult += '<p>New York Times Articles About ' + name + '</p>';
         articles = result['response']['docs'];
         $.each(articles, function (i, l) {
-            $nytElem.append('<li class="article">' +
+            nyTymesResult += '<li class="article">' +
                 '<a href="' + l['web_url'] + '">' + l['headline']['main'] +
-                '</a>' + '<p>' + l['snippet'] + '</p>' + '</li>');
+                '</a>' + '<p>' + l['snippet'] + '</p>' + '</li>';
         });
     }).fail(function (err) {
-        $nytHeaderElem.text('New York Times Articles Could Not Be Loaded');
+        nyTymesResult = '<p>New York Times Articles Could Not Be Loaded</p>';
         throw err;
     });
 
+    var wikiResult = '';
+
     //load mediawiki
     var wikiRequestTimeout = setTimeout(function () {
-        $wikiElem.text('failed to get wikipedia resources');
+        wikiResult = '<p>failed to get wikipedia resources</p>';
     }, 8000);
 
     $.ajax({
@@ -281,12 +288,12 @@ function loadData() {
             for (var i = 0; i < len; i++) {
                 var wikiEntry = articleList[i];
                 var url = '//en.wikipedia.org/wiki/' + articleList;
-                $($wikiElem).append('<li><a href="' + url + '">' + wikiEntry + '</a></li>');
+                wikiResult += '<li><a href="' + url + '">' + wikiEntry + '</a></li>';
             }
 
             clearTimeout(wikiRequestTimeout);
         }
     });
 
-    return false;
+    return nyTymesResult + wikiResult;
 }
