@@ -1,11 +1,4 @@
 var base = 'img/';
-var url = "//api.nytimes.com/svc/search/v2/articlesearch.json?q=" + city + '&sort=newest';
-url += '&' + $.param({
-        'api-key': "244fe31313e34cf482ca66e34a351ed3"
-    });
-
-//mediawiki
-var url_mediawiki = '//en.wikipedia.org/w/api.php?action=opensearch&search=' + city + '&format=json&callback=?';
 
 function initMap() {
     ko.applyBindings(new ViewModel());
@@ -250,6 +243,14 @@ $.ajax({
 });
 
 function loadData() {
+    var url = "//api.nytimes.com/svc/search/v2/articlesearch.json?q=" + city + '&sort=newest';
+    url += '&' + $.param({
+            'api-key': "244fe31313e34cf482ca66e34a351ed3"
+        });
+
+    //mediawiki
+    var url_mediawiki = '//en.wikipedia.org/w/api.php?action=opensearch&search=' + city + '&format=json&callback=?';
+
     $.ajax({
         url: url,
         method: 'GET'
