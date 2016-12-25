@@ -264,6 +264,7 @@ var ViewModel = function () {
 
     this.clearFilter = function () {
         this.filteredMapObjectList([]);
+        this.userInput('');
     };
 
     this.currentList = ko.computed(function () {
@@ -272,6 +273,7 @@ var ViewModel = function () {
 
     this.filterMarkers = function () {
         var input = this.userInput();
+        self.filteredMapObjectList([]);
         initialMapObjects.forEach(function (mapItem) {
             if (input == mapItem.name) {
                 var condition = function (item) {
