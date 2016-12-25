@@ -177,7 +177,9 @@ ko.bindingHandlers.googleMap = {
                     marker.setAnimation(null);
                 } else {
                     marker.setAnimation(google.maps.Animation.BOUNCE);
-                    setTimeout(function(){ marker.setAnimation(null); }, 900);
+                    setTimeout(function () {
+                        marker.setAnimation(null);
+                    }, 900);
                 }
             }
 
@@ -203,6 +205,7 @@ var MapObject = function (data) {
 
 var ViewModel = function () {
     var self = this;
+
     this.mapObjectList = ko.observableArray([]);
     this.filteredMapObjectList = ko.observableArray([]);
 
@@ -215,13 +218,24 @@ var ViewModel = function () {
         self.mapObjectList.push(new MapObject(mapItem))
     });
 
-    self.currentList = this.filteredMapObjectList().length === 0 ? this.mapObjectList() : this.filteredMapObjectList();
+    this.clearFilter = function () {
+        this.filteredMapObjectList([]);
+    };
+
+    this.currentList = ko.computed(function () {
+        return self.filteredMapObjectList().length == 0 ? self.mapObjectList() : self.filteredMapObjectList();
+    });
 
     this.filterMarkers = function () {
         var input = this.userInput();
         initialMapObjects.forEach(function (mapItem) {
             if (input == mapItem.name) {
-                self.filteredMapObjectList.push(new MapObject(mapItem))
+                var condition = function (item) {
+                    return item.name != mapItem.name;
+                };
+                if (self.filteredMapObjectList().filter(condition).length == 0) {
+                    self.filteredMapObjectList.push(new MapObject(mapItem));
+                }
             }
         });
     };
