@@ -1,54 +1,4 @@
 function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 12,
-        center: initialMapObjects[0].coordinates
-    });
-    var marker = new google.maps.Marker({
-        position: initialMapObjects[0].coordinates,
-        map: map,
-        title: 'Uluru (Ayers Rock)'
-    });
-    var marker1 = new google.maps.Marker({
-        position: initialMapObjects[1].coordinates,
-        map: map
-    });
-    var marker2 = new google.maps.Marker({
-        position: initialMapObjects[2].coordinates,
-        map: map
-    });
-    var marker3 = new google.maps.Marker({
-        position: initialMapObjects[3].coordinates,
-        map: map
-    });
-    var marker4 = new google.maps.Marker({
-        position: initialMapObjects[4].coordinates,
-        map: map
-    });
-    var marker5 = new google.maps.Marker({
-        position: initialMapObjects[5].coordinates,
-        draggable: true,
-        map: map,
-        animation: google.maps.Animation.DROP
-    });
-    marker5.addListener('click', toggleBounce);
-
-    function toggleBounce() {
-        if (marker5.getAnimation() !== null) {
-            marker5.setAnimation(null);
-        } else {
-            marker5.setAnimation(google.maps.Animation.BOUNCE);
-        }
-    }
-
-    var infowindow = new google.maps.InfoWindow({
-        content: initialMapObjects[0].content,
-        maxWidth: 500
-    });
-
-    marker.addListener('click', function () {
-        infowindow.open(map, marker);
-    });
-
     ko.applyBindings(new ViewModel());
 }
 
@@ -199,22 +149,77 @@ var initialMapObjects = [
     }
 ];
 
+ko.bindingHandlers.googleMap = {
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        var value = ko.unwrap(valueAccessor());
+        var mapOptions = {
+            center: new google.maps.LatLng(
+                55.752198, 37.617499),
+            zoom: 9
+        };
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        value.forEach(function (mapItem) {
+            var latLng = new google.maps.LatLng(
+                mapItem.coordinates().lat,
+                mapItem.coordinates().lng);
+            var marker = new google.maps.Marker({
+                position: latLng,
+                draggable: true,
+                map: map,
+                animation: google.maps.Animation.DROP
+            });
+
+            function toggleBounce() {
+                if (marker.getAnimation() !== null) {
+                    marker.setAnimation(null);
+                } else {
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                }
+            }
+
+            marker.addListener('click', toggleBounce);
+
+            var infowindow = new google.maps.InfoWindow({
+                content: mapItem.content(),
+                maxWidth: 500
+            });
+
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
+        });
+    }
+};
+
 var MapObject = function (data) {
     this.name = ko.observable(data.name);
+    this.coordinates = ko.observable(data.coordinates);
+    this.content = ko.observable(data.content);
 };
 
 var ViewModel = function () {
     var self = this;
     this.mapObjectList = ko.observableArray([]);
+    this.filteredMapObjectList = ko.observableArray([]);
+
     this.userInput = ko.observable('');
-    this.hasError = ko.observable(true);
+
+    this.hasError = ko.observable(false);
     this.error = ko.observable('error');
 
     initialMapObjects.forEach(function (mapItem) {
         self.mapObjectList.push(new MapObject(mapItem))
     });
 
+    self.currentList = this.filteredMapObjectList().length === 0 ? this.mapObjectList() : this.filteredMapObjectList();
+
     this.filterMarkers = function () {
-        console.log(this.userInput());
+        var input = this.userInput();
+        initialMapObjects.forEach(function (mapItem) {
+            if (input == mapItem.name) {
+                self.filteredMapObjectList.push(new MapObject(mapItem))
+            }
+        });
     };
 };
