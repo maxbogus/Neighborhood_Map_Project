@@ -1,3 +1,5 @@
+var base = 'img/';
+
 function initMap() {
     ko.applyBindings(new ViewModel());
 }
@@ -15,7 +17,7 @@ var initialMapObjects = [
         '<li>Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks).</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'img/acronis_logo.png'
+        "icon": 'bankiru.png'
     },
     {
         "name": "Luxoft",
@@ -27,7 +29,7 @@ var initialMapObjects = [
         '<li>Developed 6 test suites for 6 modules of WIRS system.</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'img/acronis_logo.png'
+        "icon": 'luxoft.png'
     },
     {
         "name": "Acronis",
@@ -40,7 +42,7 @@ var initialMapObjects = [
         '<li>Found and submitted ~6700 defects.</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'img/acronis_logo.png'
+        "icon": 'acronis.png'
     },
     {
         "name": "Innova",
@@ -53,7 +55,7 @@ var initialMapObjects = [
         '<li>Successful release with low defects (20 bugs) of a new version of 4game platform in Europe and Russia.</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'img/acronis_logo.png'
+        "icon": 'innova.png'
     },
     {
         "name": "Superscape",
@@ -65,7 +67,7 @@ var initialMapObjects = [
         '<li>Found ~1200 defects were found and submitted personally (35% of defects could cause hardware defects in the cell phone or major data loss).</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'img/acronis_logo.png'
+        "icon": 'superscape.png'
     }
 ];
 
@@ -80,6 +82,16 @@ ko.bindingHandlers.googleMap = {
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
         value.forEach(function (mapItem) {
+            var image = {
+                url: base + mapItem.icon(),
+                // This marker is 20 pixels wide by 32 pixels high.
+                size: new google.maps.Size(32, 32),
+                // The origin for this image is (0, 0).
+                origin: new google.maps.Point(0, 0),
+                // The anchor for this image is the base of the flagpole at (0, 32).
+                anchor: new google.maps.Point(0, 32)
+            };
+
             var latLng = new google.maps.LatLng(
                 mapItem.coordinates().lat,
                 mapItem.coordinates().lng);
@@ -87,7 +99,7 @@ ko.bindingHandlers.googleMap = {
                 position: latLng,
                 draggable: true,
                 map: map,
-                icon: mapItem.icon(),
+                icon: image,
                 animation: google.maps.Animation.DROP
             });
 
@@ -128,10 +140,20 @@ ko.bindingHandlers.googleMap = {
             var latLng = new google.maps.LatLng(
                 mapItem.coordinates().lat,
                 mapItem.coordinates().lng);
+            var image = {
+                url: base + mapItem.icon(),
+                // This marker is 20 pixels wide by 32 pixels high.
+                size: new google.maps.Size(32, 32),
+                // The origin for this image is (0, 0).
+                origin: new google.maps.Point(0, 0),
+                // The anchor for this image is the base of the flagpole at (0, 32).
+                anchor: new google.maps.Point(0, 32)
+            };
             var marker = new google.maps.Marker({
                 position: latLng,
                 draggable: true,
                 map: map,
+                icon: image,
                 animation: google.maps.Animation.DROP
             });
 
