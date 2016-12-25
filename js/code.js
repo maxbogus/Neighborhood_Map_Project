@@ -4,146 +4,78 @@ function initMap() {
 
 var initialMapObjects = [
     {
-        "name": 1,
+        "name": "Banki.ru",
         "coordinates": {lat: 55.706770, lng: 37.625883},
-        "content": '<div id="content">' +
-        '<div id="siteNotice">' +
-        '</div>' +
-        '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
+        "content": '<div>' +
+        '<h1 class="firstHeading">Banki.ru</h1>' +
         '<div id="bodyContent">' +
-        '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-        'sandstone rock formation in the southern part of the ' +
-        'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) ' +
-        'south west of the nearest large town, Alice Springs; 450&#160;km ' +
-        '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major ' +
-        'features of the Uluru - Kata Tjuta National Park. Uluru is ' +
-        'sacred to the Pitjantjatjara and Yankunytjatjara, the ' +
-        'Aboriginal people of the area. It has many springs, waterholes, ' +
-        'rock caves and ancient paintings. Uluru is listed as a World ' +
-        'Heritage Site.</p>' +
-        '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-        'https://en.wikipedia.org/w/index.php?title=Uluru</a> ' +
-        '(last visited June 22, 2009).</p>' +
+        '<p><b>Head of Quality Assurance:</b></p><ul><li>Responsible for hiring and managing of two groups of testers: local (5 people) and two remote teams.</li>' +
+        '<li>Created department from ‘scratch’ in two years and developed processes to support department goals.</li>' +
+        '<li>Realized and implemented a semi-automatic solution that enables the Smoke-testing of more than 900 pages of our website in 5 minutes;</li>' +
+        '<li>Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks).</li></ul>' +
         '</div>' +
         '</div>'
     },
     {
-        "name": 2,
+        "name": "Luxoft",
         "coordinates": {lat: 55.815230, lng: 37.573992},
-        "content": '<div id="content">' +
-        '<div id="siteNotice">' +
-        '</div>' +
-        '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
+        "content": '<div>' +
+        '<h1 class="firstHeading">Luxoft</h1>' +
         '<div id="bodyContent">' +
-        '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-        'sandstone rock formation in the southern part of the ' +
-        'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) ' +
-        'south west of the nearest large town, Alice Springs; 450&#160;km ' +
-        '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major ' +
-        'features of the Uluru - Kata Tjuta National Park. Uluru is ' +
-        'sacred to the Pitjantjatjara and Yankunytjatjara, the ' +
-        'Aboriginal people of the area. It has many springs, waterholes, ' +
-        'rock caves and ancient paintings. Uluru is listed as a World ' +
-        'Heritage Site.</p>' +
-        '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-        'https://en.wikipedia.org/w/index.php?title=Uluru</a> ' +
-        '(last visited June 22, 2009).</p>' +
+        '<p><b>Test Designer:</b></p><ul><li>Was responsible for test design and manual testing of WIRS system;</li>' +
+        '<li>Developed 6 test suites for 6 modules of WIRS system.</li></ul>' +
         '</div>' +
         '</div>'
     },
     {
         "name": 3,
         "coordinates": {lat: 55.874736, lng: 37.588088},
-        "content": '<div id="content">' +
-        '<div id="siteNotice">' +
-        '</div>' +
-        '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
+        "content": '<div>' +
+        '<h1 class="firstHeading">Banki.ru</h1>' +
         '<div id="bodyContent">' +
-        '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-        'sandstone rock formation in the southern part of the ' +
-        'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) ' +
-        'south west of the nearest large town, Alice Springs; 450&#160;km ' +
-        '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major ' +
-        'features of the Uluru - Kata Tjuta National Park. Uluru is ' +
-        'sacred to the Pitjantjatjara and Yankunytjatjara, the ' +
-        'Aboriginal people of the area. It has many springs, waterholes, ' +
-        'rock caves and ancient paintings. Uluru is listed as a World ' +
-        'Heritage Site.</p>' +
-        '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-        'https://en.wikipedia.org/w/index.php?title=Uluru</a> ' +
-        '(last visited June 22, 2009).</p>' +
+        '<p><b>Head of Quality Assurance:</b></p><ul><li>Responsible for hiring and managing of two groups of testers: local (5 people) and two remote teams.</li>' +
+        '<li>Created department from ‘scratch’ in two years and developed processes to support department goals.</li>' +
+        '<li>Realized and implemented a semi-automatic solution that enables the Smoke-testing of more than 900 pages of our website in 5 minutes;</li>' +
+        '<li>Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks).</li></ul>' +
         '</div>' +
         '</div>'
     },
     {
         "name": 4,
         "coordinates": {lat: 55.749884, lng: 37.654274},
-        "content": '<div id="content">' +
-        '<div id="siteNotice">' +
-        '</div>' +
-        '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
+        "content": '<div>' +
+        '<h1 class="firstHeading">Banki.ru</h1>' +
         '<div id="bodyContent">' +
-        '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-        'sandstone rock formation in the southern part of the ' +
-        'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) ' +
-        'south west of the nearest large town, Alice Springs; 450&#160;km ' +
-        '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major ' +
-        'features of the Uluru - Kata Tjuta National Park. Uluru is ' +
-        'sacred to the Pitjantjatjara and Yankunytjatjara, the ' +
-        'Aboriginal people of the area. It has many springs, waterholes, ' +
-        'rock caves and ancient paintings. Uluru is listed as a World ' +
-        'Heritage Site.</p>' +
-        '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-        'https://en.wikipedia.org/w/index.php?title=Uluru</a> ' +
-        '(last visited June 22, 2009).</p>' +
+        '<p><b>Head of Quality Assurance:</b></p><ul><li>Responsible for hiring and managing of two groups of testers: local (5 people) and two remote teams.</li>' +
+        '<li>Created department from ‘scratch’ in two years and developed processes to support department goals.</li>' +
+        '<li>Realized and implemented a semi-automatic solution that enables the Smoke-testing of more than 900 pages of our website in 5 minutes;</li>' +
+        '<li>Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks).</li></ul>' +
         '</div>' +
         '</div>'
     },
     {
         "name": 5,
         "coordinates": {lat: 55.708177, lng: 37.654653},
-        "content": '<div id="content">' +
-        '<div id="siteNotice">' +
-        '</div>' +
-        '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
+        "content": '<div>' +
+        '<h1 class="firstHeading">Banki.ru</h1>' +
         '<div id="bodyContent">' +
-        '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-        'sandstone rock formation in the southern part of the ' +
-        'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) ' +
-        'south west of the nearest large town, Alice Springs; 450&#160;km ' +
-        '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major ' +
-        'features of the Uluru - Kata Tjuta National Park. Uluru is ' +
-        'sacred to the Pitjantjatjara and Yankunytjatjara, the ' +
-        'Aboriginal people of the area. It has many springs, waterholes, ' +
-        'rock caves and ancient paintings. Uluru is listed as a World ' +
-        'Heritage Site.</p>' +
-        '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-        'https://en.wikipedia.org/w/index.php?title=Uluru</a> ' +
-        '(last visited June 22, 2009).</p>' +
+        '<p><b>Head of Quality Assurance:</b></p><ul><li>Responsible for hiring and managing of two groups of testers: local (5 people) and two remote teams.</li>' +
+        '<li>Created department from ‘scratch’ in two years and developed processes to support department goals.</li>' +
+        '<li>Realized and implemented a semi-automatic solution that enables the Smoke-testing of more than 900 pages of our website in 5 minutes;</li>' +
+        '<li>Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks).</li></ul>' +
         '</div>' +
         '</div>'
     },
     {
         "name": 6,
         "coordinates": {lat: 55.740228, lng: 37.625539},
-        "content": '<div id="content">' +
-        '<div id="siteNotice">' +
-        '</div>' +
-        '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
+        "content": '<div>' +
+        '<h1 class="firstHeading">Banki.ru</h1>' +
         '<div id="bodyContent">' +
-        '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-        'sandstone rock formation in the southern part of the ' +
-        'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) ' +
-        'south west of the nearest large town, Alice Springs; 450&#160;km ' +
-        '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major ' +
-        'features of the Uluru - Kata Tjuta National Park. Uluru is ' +
-        'sacred to the Pitjantjatjara and Yankunytjatjara, the ' +
-        'Aboriginal people of the area. It has many springs, waterholes, ' +
-        'rock caves and ancient paintings. Uluru is listed as a World ' +
-        'Heritage Site.</p>' +
-        '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-        'https://en.wikipedia.org/w/index.php?title=Uluru</a> ' +
-        '(last visited June 22, 2009).</p>' +
+        '<p><b>Head of Quality Assurance:</b></p><ul><li>Responsible for hiring and managing of two groups of testers: local (5 people) and two remote teams.</li>' +
+        '<li>Created department from ‘scratch’ in two years and developed processes to support department goals.</li>' +
+        '<li>Realized and implemented a semi-automatic solution that enables the Smoke-testing of more than 900 pages of our website in 5 minutes;</li>' +
+        '<li>Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks).</li></ul>' +
         '</div>' +
         '</div>'
     }

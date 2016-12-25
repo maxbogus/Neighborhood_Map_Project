@@ -18,7 +18,6 @@
     </div>
     <br>
     <div class="row">
-        <div class="alert alert-danger" role="alert" data-bind="text: error, visible: hasError, click: function(){ this.hasError(false) }"></div>
         <div class="col-xs-12 col-sm-4">
             <form class="form-inline ">
                 <div class="form-group">
@@ -27,6 +26,11 @@
                            data-bind="textInput: userInput"/>
                     <button type="submit" class="btn btn-default" data-bind="click: filterMarkers">Search</button>
                     <button type="submit" class="btn btn-default" data-bind="click: clearFilter">Clear</button>
+                </div>
+                <div data-bind="visible: hasError">
+                    <br>
+                    <div class="alert alert-danger" role="alert"
+                         data-bind="text: error, click: function(){ this.hasError(false) }"></div>
                 </div>
             </form>
             <br>
