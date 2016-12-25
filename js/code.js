@@ -217,11 +217,11 @@ var ViewModel = function () {
     });
 
     this.filterMarkers = function () {
-        var input = this.userInput();
+        var input = this.userInput().toLowerCase();
         this.filteredMapObjectList([]);
         this.hasError(false);
         initialMapObjects.forEach(function (mapItem) {
-            if (input == mapItem.name) {
+            if (mapItem.name.toLowerCase().includes(input)) {
                 self.filteredMapObjectList.push(new MapObject(mapItem));
             }
         });
