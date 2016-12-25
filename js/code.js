@@ -265,6 +265,7 @@ var ViewModel = function () {
     this.clearFilter = function () {
         this.filteredMapObjectList([]);
         this.userInput('');
+        this.hasError(false);
     };
 
     this.currentList = ko.computed(function () {
@@ -273,19 +274,16 @@ var ViewModel = function () {
 
     this.filterMarkers = function () {
         var input = this.userInput();
-        self.filteredMapObjectList([]);
+        this.filteredMapObjectList([]);
+        this.hasError(false);
         initialMapObjects.forEach(function (mapItem) {
             if (input == mapItem.name) {
-                var condition = function (item) {
-                    return item.name != mapItem.name;
-                };
-                if (self.filteredMapObjectList().filter(condition).length == 0) {
-                    self.filteredMapObjectList.push(new MapObject(mapItem));
-                } else {
-                    self.hasError(true);
-                    self.error("User input doesn't match list of locations");
-                }
+                self.filteredMapObjectList.push(new MapObject(mapItem));
             }
         });
+        if (self.filteredMapObjectList().length === 0) {
+            self.hasError(true);
+            self.error("User input doesn't match names in list");
+        }
     };
 };

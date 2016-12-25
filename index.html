@@ -18,7 +18,7 @@
     </div>
     <br>
     <div class="row">
-        <div class="alert alert-danger" role="alert" data-bind="text: error, visible: hasError"></div>
+        <div class="alert alert-danger" role="alert" data-bind="text: error, visible: hasError, click: function(){ this.hasError(false) }"></div>
         <div class="col-xs-12 col-sm-4">
             <form class="form-inline ">
                 <div class="form-group">
