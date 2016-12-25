@@ -194,6 +194,50 @@ ko.bindingHandlers.googleMap = {
                 infowindow.open(map, marker);
             });
         });
+    }, update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        var value = ko.unwrap(valueAccessor());
+        var mapOptions = {
+            center: new google.maps.LatLng(
+                55.752198, 37.617499),
+            zoom: 9
+        };
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        value.forEach(function (mapItem) {
+            var latLng = new google.maps.LatLng(
+                mapItem.coordinates().lat,
+                mapItem.coordinates().lng);
+            var marker = new google.maps.Marker({
+                position: latLng,
+                draggable: true,
+                map: map,
+                animation: google.maps.Animation.DROP
+            });
+
+            function toggleBounce() {
+                marker.setAnimation(null);
+
+                if (marker.getAnimation() != null) {
+                    marker.setAnimation(null);
+                } else {
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                    setTimeout(function () {
+                        marker.setAnimation(null);
+                    }, 900);
+                }
+            }
+
+            marker.addListener('click', toggleBounce);
+
+            var infowindow = new google.maps.InfoWindow({
+                content: mapItem.content(),
+                maxWidth: 500
+            });
+
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
+        });
     }
 };
 
@@ -235,6 +279,9 @@ var ViewModel = function () {
                 };
                 if (self.filteredMapObjectList().filter(condition).length == 0) {
                     self.filteredMapObjectList.push(new MapObject(mapItem));
+                } else {
+                    self.hasError(true);
+                    self.error("User input doesn't match list of locations");
                 }
             }
         });
