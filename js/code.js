@@ -118,6 +118,10 @@ ko.bindingHandlers.googleMap = {
 
             marker.addListener('click', toggleBounce);
 
+            var content = loadData(encodeURI(mapItem.name()));
+
+            console.log(content);
+
             var infowindow = new google.maps.InfoWindow({
                 content: mapItem.content(),
                 maxWidth: 500
@@ -173,7 +177,7 @@ ko.bindingHandlers.googleMap = {
 
             marker.addListener('click', toggleBounce);
 
-            var content = loadData(mapItem.name());
+            var content = loadData(encodeURI(mapItem.name()));
 
             var infowindow = new google.maps.InfoWindow({
                 content: mapItem.content() + content,
@@ -234,22 +238,21 @@ var ViewModel = function () {
         }
     };
 };
-
-$.ajax({
-    type: "GET",
-    url: "https://maps.googleapis.com/maps/api/",
-    success: function (data, status, xhr) {
-    },
-    error: function (xhr, status, error) {
-        alert('Sorry man. No map for you!');
-    }
-});
+//
+// $.ajax({
+//     type: "GET",
+//     dataType: 'jsonp',
+//     url: "https://maps.googleapis.com/",
+//     success: function (data, status, xhr) {
+//     },
+//     error: function (xhr, status, error) {
+//         alert('Sorry man. No map for you!');
+//     }
+// });
 
 function loadData(name) {
-    var url = "//api.nytimes.com/svc/search/v2/articlesearch.json?q=" + name + '&sort=newest';
-    url += '&' + $.param({
-            'api-key': "244fe31313e34cf482ca66e34a351ed3"
-        });
+    var url = "//api.nytimes.com/svc/search/v2/articlesearch.json?q="
+        + name + '&sort=newest&api-key=244fe31313e34cf482ca66e34a351ed3';
 
     //mediawiki
     var url_mediawiki = '//en.wikipedia.org/w/api.php?action=opensearch&search=' + name + '&format=json&callback=?';
@@ -272,28 +275,30 @@ function loadData(name) {
         throw err;
     });
 
-    var wikiResult = '';
+    var wikiResult = '123';
 
-    //load mediawiki
+// load mediawiki
     var wikiRequestTimeout = setTimeout(function () {
         wikiResult = '<p>failed to get wikipedia resources</p>';
     }, 8000);
 
     $.ajax({
-        url: url_mediawiki,
-        dataType: 'jsonp',
-        success: function (dataWeGotViaJsonp) {
+        'async': false,
+        'url': url_mediawiki,
+        'dataType': 'jsonp',
+        'success': function (dataWeGotViaJsonp) {
+            var temp = '';
             var articleList = dataWeGotViaJsonp[1];
             var len = articleList.length;
             for (var i = 0; i < len; i++) {
                 var wikiEntry = articleList[i];
                 var url = '//en.wikipedia.org/wiki/' + articleList;
-                wikiResult += '<li><a href="' + url + '">' + wikiEntry + '</a></li>';
+                temp = temp.concat('<li><a href="' + url + '">' + wikiEntry + '</a></li>');
             }
-
+            wikiResult = temp;
             clearTimeout(wikiRequestTimeout);
         }
     });
 
-    return nyTymesResult + wikiResult;
+    return nyTymesResult;
 }
