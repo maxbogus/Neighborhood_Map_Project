@@ -14,7 +14,8 @@ var initialMapObjects = [
         '<li>Realized and implemented a semi-automatic solution that enables the Smoke-testing of more than 900 pages of our website in 5 minutes;</li>' +
         '<li>Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks).</li></ul>' +
         '</div>' +
-        '</div>'
+        '</div>',
+        "icon": 'img/acronis_logo.png'
     },
     {
         "name": "Luxoft",
@@ -25,59 +26,46 @@ var initialMapObjects = [
         '<p><b>Test Designer:</b></p><ul><li>Was responsible for test design and manual testing of WIRS system;</li>' +
         '<li>Developed 6 test suites for 6 modules of WIRS system.</li></ul>' +
         '</div>' +
-        '</div>'
+        '</div>',
+        "icon": 'img/acronis_logo.png'
     },
     {
-        "name": 3,
+        "name": "Acronis",
         "coordinates": {lat: 55.874736, lng: 37.588088},
         "content": '<div>' +
-        '<h1 class="firstHeading">Banki.ru</h1>' +
+        '<h1 class="firstHeading">Acronis</h1>' +
         '<div id="bodyContent">' +
-        '<p><b>Head of Quality Assurance:</b></p><ul><li>Responsible for hiring and managing of two groups of testers: local (5 people) and two remote teams.</li>' +
-        '<li>Created department from ‘scratch’ in two years and developed processes to support department goals.</li>' +
-        '<li>Realized and implemented a semi-automatic solution that enables the Smoke-testing of more than 900 pages of our website in 5 minutes;</li>' +
-        '<li>Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks).</li></ul>' +
+        '<p><b>Quality Assurance Engineer:</b></p><ul><li>Was responsible for test design, requirements analysis and manual testing (regression, stress, volume, script-based and exploratory);</li>' +
+        '<li>Created 1500 TCs for manual and auto testing;</li>' +
+        '<li>Found and submitted ~6700 defects.</li></ul>' +
         '</div>' +
-        '</div>'
+        '</div>',
+        "icon": 'img/acronis_logo.png'
     },
     {
-        "name": 4,
-        "coordinates": {lat: 55.749884, lng: 37.654274},
+        "name": "Innova",
+        "coordinates": {lat: 55.747078, lng: 37.653688},
         "content": '<div>' +
-        '<h1 class="firstHeading">Banki.ru</h1>' +
+        '<h1 class="firstHeading">Innova</h1>' +
         '<div id="bodyContent">' +
-        '<p><b>Head of Quality Assurance:</b></p><ul><li>Responsible for hiring and managing of two groups of testers: local (5 people) and two remote teams.</li>' +
-        '<li>Created department from ‘scratch’ in two years and developed processes to support department goals.</li>' +
-        '<li>Realized and implemented a semi-automatic solution that enables the Smoke-testing of more than 900 pages of our website in 5 minutes;</li>' +
-        '<li>Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks).</li></ul>' +
+        '<p><b>Test manager:</b></p><ul><li>Was responsible for hiring and managing of one local team (4 people).</li>' +
+        '<li>Performed functional and exploratory testing.</li>' +
+        '<li>Successful release with low defects (20 bugs) of a new version of 4game platform in Europe and Russia.</li></ul>' +
         '</div>' +
-        '</div>'
+        '</div>',
+        "icon": 'img/acronis_logo.png'
     },
     {
-        "name": 5,
-        "coordinates": {lat: 55.708177, lng: 37.654653},
+        "name": "Superscape",
+        "coordinates": {lat: 55.724779, lng: 37.642375},
         "content": '<div>' +
-        '<h1 class="firstHeading">Banki.ru</h1>' +
+        '<h1 class="firstHeading">Superscape</h1>' +
         '<div id="bodyContent">' +
-        '<p><b>Head of Quality Assurance:</b></p><ul><li>Responsible for hiring and managing of two groups of testers: local (5 people) and two remote teams.</li>' +
-        '<li>Created department from ‘scratch’ in two years and developed processes to support department goals.</li>' +
-        '<li>Realized and implemented a semi-automatic solution that enables the Smoke-testing of more than 900 pages of our website in 5 minutes;</li>' +
-        '<li>Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks).</li></ul>' +
+        '<p><b>Tester:</b></p><ul><li>* Was responsible for manual testing;</li>' +
+        '<li>Found ~1200 defects were found and submitted personally (35% of defects could cause hardware defects in the cell phone or major data loss).</li></ul>' +
         '</div>' +
-        '</div>'
-    },
-    {
-        "name": 6,
-        "coordinates": {lat: 55.740228, lng: 37.625539},
-        "content": '<div>' +
-        '<h1 class="firstHeading">Banki.ru</h1>' +
-        '<div id="bodyContent">' +
-        '<p><b>Head of Quality Assurance:</b></p><ul><li>Responsible for hiring and managing of two groups of testers: local (5 people) and two remote teams.</li>' +
-        '<li>Created department from ‘scratch’ in two years and developed processes to support department goals.</li>' +
-        '<li>Realized and implemented a semi-automatic solution that enables the Smoke-testing of more than 900 pages of our website in 5 minutes;</li>' +
-        '<li>Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks).</li></ul>' +
-        '</div>' +
-        '</div>'
+        '</div>',
+        "icon": 'img/acronis_logo.png'
     }
 ];
 
@@ -99,6 +87,7 @@ ko.bindingHandlers.googleMap = {
                 position: latLng,
                 draggable: true,
                 map: map,
+                icon: mapItem.icon(),
                 animation: google.maps.Animation.DROP
             });
 
@@ -177,6 +166,7 @@ var MapObject = function (data) {
     this.name = ko.observable(data.name);
     this.coordinates = ko.observable(data.coordinates);
     this.content = ko.observable(data.content);
+    this.icon = ko.observable(data.icon);
 };
 
 var ViewModel = function () {
