@@ -1,4 +1,11 @@
 var base = 'img/';
+var url = "//api.nytimes.com/svc/search/v2/articlesearch.json?q=" + city + '&sort=newest';
+url += '&' + $.param({
+        'api-key': "244fe31313e34cf482ca66e34a351ed3"
+    });
+
+//mediawiki
+var url_mediawiki = '//en.wikipedia.org/w/api.php?action=opensearch&search=' + city + '&format=json&callback=?';
 
 function initMap() {
     ko.applyBindings(new ViewModel());
@@ -231,3 +238,54 @@ var ViewModel = function () {
         }
     };
 };
+
+$.ajax({
+    type: "GET",
+    url: "https://maps.googleapis.com/maps/api/",
+    success: function (data, status, xhr) {
+    },
+    error: function (xhr, status, error) {
+        alert('Sorry man. No map for you!');
+    }
+});
+
+function loadData() {
+    $.ajax({
+        url: url,
+        method: 'GET'
+    }).done(function (result) {
+        $nytHeaderElem.text('New York Times Articles About ' + city);
+        articles = result['response']['docs'];
+        $.each(articles, function (i, l) {
+            $nytElem.append('<li class="article">' +
+                '<a href="' + l['web_url'] + '">' + l['headline']['main'] +
+                '</a>' + '<p>' + l['snippet'] + '</p>' + '</li>');
+        });
+    }).fail(function (err) {
+        $nytHeaderElem.text('New York Times Articles Could Not Be Loaded');
+        throw err;
+    });
+
+    //load mediawiki
+    var wikiRequestTimeout = setTimeout(function () {
+        $wikiElem.text('failed to get wikipedia resources');
+    }, 8000);
+
+    $.ajax({
+        url: url_mediawiki,
+        dataType: 'jsonp',
+        success: function (dataWeGotViaJsonp) {
+            var articleList = dataWeGotViaJsonp[1];
+            var len = articleList.length;
+            for (var i = 0; i < len; i++) {
+                var wikiEntry = articleList[i];
+                var url = '//en.wikipedia.org/wiki/' + articleList;
+                $($wikiElem).append('<li><a href="' + url + '">' + wikiEntry + '</a></li>');
+            }
+
+            clearTimeout(wikiRequestTimeout);
+        }
+    });
+
+    return false;
+}
