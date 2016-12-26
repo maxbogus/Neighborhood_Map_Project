@@ -100,8 +100,7 @@ ko.bindingHandlers.googleMap = {
                 position: latLng,
                 draggable: true,
                 map: map,
-                icon: image,
-                animation: google.maps.Animation.DROP
+                icon: image
             });
 
             function toggleBounce() {
@@ -161,8 +160,7 @@ ko.bindingHandlers.googleMap = {
                 position: latLng,
                 draggable: true,
                 map: map,
-                icon: image,
-                animation: google.maps.Animation.DROP
+                icon: image
             });
 
             function toggleBounce() {
@@ -185,6 +183,14 @@ ko.bindingHandlers.googleMap = {
                 content: mapItem.content(),
                 maxWidth: 500
             });
+
+            if (viewModel.bounceObject() !== null) {
+                if (viewModel.bounceObject().name() === mapItem.name()) {
+                    toggleBounce();
+                    infowindow.open(map, marker);
+                }
+            }
+
 
             marker.addListener('click', function () {
                 if (prev_infowindow) {
@@ -215,6 +221,12 @@ var ViewModel = function () {
 
     this.hasError = ko.observable(false);
     this.error = ko.observable('error');
+
+    this.bounceObject = ko.observable(null);
+
+    self.toggleBounce = function (object) {
+        self.bounceObject(object)
+    };
 
     this.showMessage = ko.observable(false);
     this.message = ko.observable('Please select item to view additional info');

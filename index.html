@@ -35,7 +35,7 @@
             </form>
             <br>
             <div class="list-group " data-bind="foreach: currentList">
-                <button type="button" class="list-group-item" data-bind="text: name"></button>
+                <button type="button" class="list-group-item" data-bind="text: name, click: $parent.bounceObject"></button>
             </div>
         </div>
         <div id="map" class="col-sm-8" data-bind="googleMap: currentList"></div>
