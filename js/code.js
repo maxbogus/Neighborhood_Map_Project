@@ -1,5 +1,5 @@
 var base = 'img/';
-var mapObjects = [
+var initialMapObjects = [
     {
         "name": "Banki.ru",
         "coordinates": {lat: 55.706770, lng: 37.625883},
@@ -65,36 +65,6 @@ var mapObjects = [
         "icon": 'superscape.png'
     }
 ];
-
-var initialMapObjects = [];
-
-mapObjects.forEach(function (mapItem) {
-    var wikiRequestTimeout = setTimeout(function () {
-        mapItem.content += '<p>failed to get wikipedia resources</p>';
-    }, 8000);
-
-    $.ajax({
-        'async': false,
-        'url': '//en.wikipedia.org/w/api.php?action=opensearch&search='
-        + encodeURI(mapItem.name) + '&format=json&callback=?',
-        'dataType': 'jsonp',
-        'success': function (dataWeGotViaJsonp) {
-            var temp = '123';
-            var articleList = dataWeGotViaJsonp[1];
-            var len = articleList.length;
-            for (var i = 0; i < len; i++) {
-                var wikiEntry = articleList[i];
-                var url = '//en.wikipedia.org/wiki/' + articleList;
-                temp = temp.concat('<li><a href="' + url + '">' + wikiEntry + '</a></li>');
-            }
-            mapItem.content += temp;
-
-            clearTimeout(wikiRequestTimeout);
-        }
-    });
-
-    initialMapObjects.push(mapItem);
-});
 
 function initMap() {
     ko.applyBindings(new ViewModel());
@@ -233,6 +203,23 @@ var ViewModel = function () {
     this.error = ko.observable('error');
 
     initialMapObjects.forEach(function (mapItem) {
+        $.ajax({
+            'async': false,
+            'url': '//en.wikipedia.org/w/api.php?action=opensearch&search='
+            + encodeURI(mapItem.name) + '&format=json&callback=?',
+            'dataType': 'jsonp',
+            'success': function (dataWeGotViaJsonp) {
+                var temp = '123';
+                var articleList = dataWeGotViaJsonp[1];
+                var len = articleList.length;
+                for (var i = 0; i < len; i++) {
+                    var wikiEntry = articleList[i];
+                    var url = '//en.wikipedia.org/wiki/' + articleList;
+                    temp = temp.concat('<li><a href="' + url + '">' + wikiEntry + '</a></li>');
+                }
+                mapItem.content += temp;
+            }
+        });
         self.mapObjectList.push(new MapObject(mapItem))
     });
 
