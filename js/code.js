@@ -1,10 +1,5 @@
 var base = 'img/';
-
-function initMap() {
-    ko.applyBindings(new ViewModel());
-}
-
-var initialMapObjects = [
+var mapObjects = [
     {
         "name": "Banki.ru",
         "coordinates": {lat: 55.706770, lng: 37.625883},
@@ -70,6 +65,40 @@ var initialMapObjects = [
         "icon": 'superscape.png'
     }
 ];
+var initialMapObjects = [];
+
+mapObjects.forEach(function (mapItem) {
+    var wikiRequestTimeout = setTimeout(function () {
+        mapItem.content(mapItem.content + '<p>failed to get wikipedia resources</p>');
+    }, 8000);
+
+    $.ajax({
+        'async': false,
+        'url': '//en.wikipedia.org/w/api.php?action=opensearch&search='
+        + encodeURI(mapItem.name) + '&format=json&callback=?',
+        'dataType': 'jsonp',
+        'success': function (dataWeGotViaJsonp) {
+            var temp = '123';
+            var articleList = dataWeGotViaJsonp[1];
+            var len = articleList.length;
+            for (var i = 0; i < len; i++) {
+                var wikiEntry = articleList[i];
+                var url = '//en.wikipedia.org/wiki/' + articleList;
+                temp = temp.concat('<li><a href="' + url + '">' + wikiEntry + '</a></li>');
+            }
+
+            mapItem.content = mapItem.content + temp;
+
+            clearTimeout(wikiRequestTimeout);
+        }
+    });
+
+    initialMapObjects.push(mapItem);
+});
+
+function initMap() {
+    ko.applyBindings(new ViewModel());
+}
 
 ko.bindingHandlers.googleMap = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
@@ -117,10 +146,6 @@ ko.bindingHandlers.googleMap = {
             }
 
             marker.addListener('click', toggleBounce);
-
-            var content = loadData(encodeURI(mapItem.name()));
-
-            console.log(content);
 
             var infowindow = new google.maps.InfoWindow({
                 content: mapItem.content(),
@@ -177,10 +202,8 @@ ko.bindingHandlers.googleMap = {
 
             marker.addListener('click', toggleBounce);
 
-            var content = loadData(encodeURI(mapItem.name()));
-
             var infowindow = new google.maps.InfoWindow({
-                content: mapItem.content() + content,
+                content: mapItem.content(),
                 maxWidth: 500
             });
 
@@ -249,56 +272,3 @@ var ViewModel = function () {
 //         alert('Sorry man. No map for you!');
 //     }
 // });
-
-function loadData(name) {
-    var url = "//api.nytimes.com/svc/search/v2/articlesearch.json?q="
-        + name + '&sort=newest&api-key=244fe31313e34cf482ca66e34a351ed3';
-
-    //mediawiki
-    var url_mediawiki = '//en.wikipedia.org/w/api.php?action=opensearch&search=' + name + '&format=json&callback=?';
-
-    var nyTymesResult = '';
-
-    $.ajax({
-        url: url,
-        method: 'GET'
-    }).done(function (result) {
-        nyTymesResult += '<p>New York Times Articles About ' + name + '</p>';
-        articles = result['response']['docs'];
-        $.each(articles, function (i, l) {
-            nyTymesResult += '<li class="article">' +
-                '<a href="' + l['web_url'] + '">' + l['headline']['main'] +
-                '</a>' + '<p>' + l['snippet'] + '</p>' + '</li>';
-        });
-    }).fail(function (err) {
-        nyTymesResult = '<p>New York Times Articles Could Not Be Loaded</p>';
-        throw err;
-    });
-
-    var wikiResult = '123';
-
-// load mediawiki
-    var wikiRequestTimeout = setTimeout(function () {
-        wikiResult = '<p>failed to get wikipedia resources</p>';
-    }, 8000);
-
-    $.ajax({
-        'async': false,
-        'url': url_mediawiki,
-        'dataType': 'jsonp',
-        'success': function (dataWeGotViaJsonp) {
-            var temp = '';
-            var articleList = dataWeGotViaJsonp[1];
-            var len = articleList.length;
-            for (var i = 0; i < len; i++) {
-                var wikiEntry = articleList[i];
-                var url = '//en.wikipedia.org/wiki/' + articleList;
-                temp = temp.concat('<li><a href="' + url + '">' + wikiEntry + '</a></li>');
-            }
-            wikiResult = temp;
-            clearTimeout(wikiRequestTimeout);
-        }
-    });
-
-    return nyTymesResult;
-}
