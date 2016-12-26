@@ -65,11 +65,12 @@ var mapObjects = [
         "icon": 'superscape.png'
     }
 ];
+
 var initialMapObjects = [];
 
 mapObjects.forEach(function (mapItem) {
     var wikiRequestTimeout = setTimeout(function () {
-        mapItem.content(mapItem.content + '<p>failed to get wikipedia resources</p>');
+        mapItem.content += '<p>failed to get wikipedia resources</p>';
     }, 8000);
 
     $.ajax({
@@ -86,8 +87,7 @@ mapObjects.forEach(function (mapItem) {
                 var url = '//en.wikipedia.org/wiki/' + articleList;
                 temp = temp.concat('<li><a href="' + url + '">' + wikiEntry + '</a></li>');
             }
-
-            mapItem.content = mapItem.content + temp;
+            mapItem.content += temp;
 
             clearTimeout(wikiRequestTimeout);
         }
