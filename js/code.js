@@ -216,7 +216,7 @@ var ViewModel = function () {
     this.hasError = ko.observable(false);
     this.error = ko.observable('error');
 
-    this.showMessage = ko.observable(true);
+    this.showMessage = ko.observable(false);
     this.message = ko.observable('Please select item to view additional info');
 
     this.additionalInfo = ko.observableArray([]);
@@ -240,6 +240,9 @@ var ViewModel = function () {
                     temp.push({"url":url,"wikientry":wikiEntry});
                 }
                 self.additionalInfo(temp);
+            }, error: function (data) {
+                self.showMessage(true);
+                self.message("Data couldn't be loaded.");
             }
         });
     };
