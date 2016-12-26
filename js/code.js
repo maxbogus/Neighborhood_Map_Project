@@ -237,7 +237,7 @@ var ViewModel = function () {
                 for (var i = 0; i < len; i++) {
                     var wikiEntry = articleList[i];
                     var url = urlList[i];
-                    temp.push({"url":url,"wikientry":wikiEntry});
+                    temp.push({"url": url, "wikientry": wikiEntry});
                 }
                 self.additionalInfo(temp);
             }, error: function (data) {
