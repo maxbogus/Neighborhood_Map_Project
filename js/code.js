@@ -126,7 +126,7 @@ ko.bindingHandlers.googleMap = {
             });
 
             marker.addListener('click', function () {
-                if( prev_infowindow ) {
+                if (prev_infowindow) {
                     prev_infowindow.close();
                 }
 
@@ -187,7 +187,7 @@ ko.bindingHandlers.googleMap = {
             });
 
             marker.addListener('click', function () {
-                if( prev_infowindow ) {
+                if (prev_infowindow) {
                     prev_infowindow.close();
                 }
 
@@ -216,36 +216,35 @@ var ViewModel = function () {
     this.hasError = ko.observable(false);
     this.error = ko.observable('error');
 
-    this.additionalInfo = ko.observable('');
+    this.showMessage = ko.observable(true);
+    this.message = ko.observable('Please select item to view additional info');
+
+    this.additionalInfo = ko.observableArray([]);
 
     this.request = function (name) {
         $.ajax({
             url: '//en.wikipedia.org/w/api.php?action=opensearch&search='
             + encodeURI(name) + '&format=json&callback=?',
             dataType: 'jsonp',
-            'async': false,
+            async: true,
             type: 'GET',
             cache: false,
             success: function (data) {
-                self.additionalInfo(data);
+                var temp = [];
+                var articleList = data[1];
+                var urlList = data[3];
+                var len = articleList.length;
+                for (var i = 0; i < len; i++) {
+                    var wikiEntry = articleList[i];
+                    var url = urlList[i];
+                    temp.push({"url":url,"wikientry":wikiEntry});
+                }
+                self.additionalInfo(temp);
             }
         });
     };
 
     initialMapObjects.forEach(function (mapItem) {
-        $.ajax({
-            'success': function (dataWeGotViaJsonp) {
-                var temp = '123';
-                var articleList = dataWeGotViaJsonp[1];
-                var len = articleList.length;
-                for (var i = 0; i < len; i++) {
-                    var wikiEntry = articleList[i];
-                    var url = '//en.wikipedia.org/wiki/' + articleList;
-                    temp = temp.concat('<li><a href="' + url + '">' + wikiEntry + '</a></li>');
-                }
-                mapItem.content += temp;
-            }
-        });
         self.mapObjectList.push(new MapObject(mapItem))
     });
 
