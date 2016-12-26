@@ -1,6 +1,20 @@
+// Check if google maps are loaded.
+if (typeof google === 'object' && typeof google.maps === 'object') {
+    alert('oops');
+} else {
+    console.log('gooogd')
+}
+
+// base dir for images
 var base = 'img/';
+// param to check if infowindow is already opened
 var prev_infowindow = false;
 
+//objects we are showing in list and on map
+// name - name of object
+// coord - latitude and longitude of object
+// content - info shown in info balloon in marker
+// icon - icon for custom icor
 var initialMapObjects = [
     {
         "name": "Banki.ru",
@@ -72,7 +86,9 @@ function initMap() {
     ko.applyBindings(new ViewModel());
 }
 
+// custom binding
 ko.bindingHandlers.googleMap = {
+    // init map, markers and default functionality
     init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
         var value = ko.unwrap(valueAccessor());
         var mapOptions = {
@@ -133,6 +149,7 @@ ko.bindingHandlers.googleMap = {
                 infowindow.open(map, marker);
             });
         });
+    // functionality to work after update.
     }, update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
         var value = ko.unwrap(valueAccessor());
         var mapOptions = {
@@ -233,6 +250,11 @@ var ViewModel = function () {
 
     this.additionalInfo = ko.observableArray([]);
 
+    // request to mediawiki send when info balloon is clicked
+    // url - is url where we sending request
+    // dataType is for Cross-domain requests
+    // success if for dealing with recieved data (we are creating a list of links)
+    // error is for error message.
     this.request = function (name) {
         $.ajax({
             url: '//en.wikipedia.org/w/api.php?action=opensearch&search='
@@ -240,7 +262,6 @@ var ViewModel = function () {
             dataType: 'jsonp',
             async: true,
             type: 'GET',
-            cache: false,
             success: function (data) {
                 var temp = [];
                 var articleList = data[1];
@@ -273,6 +294,10 @@ var ViewModel = function () {
         return self.filteredMapObjectList().length == 0 ? self.mapObjectList() : self.filteredMapObjectList();
     });
 
+    // filter markers in list
+    // on init we are set to default values errors and current filter
+    // we are creating a list of matched markers
+    // if no objects are matching we are showing error message
     this.filterMarkers = function () {
         var input = this.userInput().toLowerCase();
         this.filteredMapObjectList([]);
@@ -288,14 +313,3 @@ var ViewModel = function () {
         }
     };
 };
-//
-// $.ajax({
-//     type: "GET",
-//     dataType: 'jsonp',
-//     url: "https://maps.googleapis.com/",
-//     success: function (data, status, xhr) {
-//     },
-//     error: function (xhr, status, error) {
-//         alert('Sorry man. No map for you!');
-//     }
-// });
