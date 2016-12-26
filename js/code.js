@@ -1,4 +1,6 @@
 var base = 'img/';
+var prev_infowindow = false;
+
 var initialMapObjects = [
     {
         "name": "Banki.ru",
@@ -103,6 +105,7 @@ ko.bindingHandlers.googleMap = {
             });
 
             function toggleBounce() {
+                viewModel.request(mapItem.name());
                 marker.setAnimation(null);
 
                 if (marker.getAnimation() != null) {
@@ -123,6 +126,11 @@ ko.bindingHandlers.googleMap = {
             });
 
             marker.addListener('click', function () {
+                if( prev_infowindow ) {
+                    prev_infowindow.close();
+                }
+
+                prev_infowindow = infowindow;
                 infowindow.open(map, marker);
             });
         });
@@ -158,6 +166,7 @@ ko.bindingHandlers.googleMap = {
             });
 
             function toggleBounce() {
+                viewModel.request(mapItem.name());
                 marker.setAnimation(null);
 
                 if (marker.getAnimation() != null) {
@@ -178,6 +187,11 @@ ko.bindingHandlers.googleMap = {
             });
 
             marker.addListener('click', function () {
+                if( prev_infowindow ) {
+                    prev_infowindow.close();
+                }
+
+                prev_infowindow = infowindow;
                 infowindow.open(map, marker);
             });
         });
@@ -202,12 +216,24 @@ var ViewModel = function () {
     this.hasError = ko.observable(false);
     this.error = ko.observable('error');
 
+    this.additionalInfo = ko.observable('');
+
+    this.request = function (name) {
+        $.ajax({
+            url: '//en.wikipedia.org/w/api.php?action=opensearch&search='
+            + encodeURI(name) + '&format=json&callback=?',
+            dataType: 'jsonp',
+            'async': false,
+            type: 'GET',
+            cache: false,
+            success: function (data) {
+                self.additionalInfo(data);
+            }
+        });
+    };
+
     initialMapObjects.forEach(function (mapItem) {
         $.ajax({
-            'async': false,
-            'url': '//en.wikipedia.org/w/api.php?action=opensearch&search='
-            + encodeURI(mapItem.name) + '&format=json&callback=?',
-            'dataType': 'jsonp',
             'success': function (dataWeGotViaJsonp) {
                 var temp = '123';
                 var articleList = dataWeGotViaJsonp[1];
