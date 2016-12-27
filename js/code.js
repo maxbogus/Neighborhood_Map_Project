@@ -1,5 +1,5 @@
 var base = 'img/';
-var prev_infowindow = false;
+var prevInfoWindow = false;
 
 var initialMapObjects = [
     {
@@ -76,6 +76,14 @@ function initMap() {
     ko.applyBindings(new ViewModel());
 }
 
+function openInfoWindow(infowindow, map, marker) {
+    if (prevInfoWindow) {
+        prevInfoWindow.close();
+    }
+
+    prevInfoWindow = infowindow;
+    infowindow.open(map, marker);
+}
 ko.bindingHandlers.googleMap = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
         var value = ko.unwrap(valueAccessor());
@@ -129,12 +137,7 @@ ko.bindingHandlers.googleMap = {
             });
 
             marker.addListener('click', function () {
-                if (prev_infowindow) {
-                    prev_infowindow.close();
-                }
-
-                prev_infowindow = infowindow;
-                infowindow.open(map, marker);
+                openInfoWindow(infowindow, map, marker);
             });
         });
     }, update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
@@ -191,18 +194,12 @@ ko.bindingHandlers.googleMap = {
             if (viewModel.bounceObject() !== null) {
                 if (viewModel.bounceObject().name() === mapItem.name()) {
                     toggleBounce();
-                    infowindow.open(map, marker);
+                    openInfoWindow(infowindow, map, marker);
                 }
             }
 
-
             marker.addListener('click', function () {
-                if (prev_infowindow) {
-                    prev_infowindow.close();
-                }
-
-                prev_infowindow = infowindow;
-                infowindow.open(map, marker);
+                openInfoWindow(infowindow, map, marker);
             });
         });
     }
