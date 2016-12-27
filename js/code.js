@@ -68,6 +68,10 @@ var initialMapObjects = [
     }
 ];
 
+function checkGoogleMaps() {
+    alert("Couldn't connect to Google Maps!");
+}
+
 function initMap() {
     ko.applyBindings(new ViewModel());
 }
