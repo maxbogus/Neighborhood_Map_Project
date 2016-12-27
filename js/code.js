@@ -90,7 +90,7 @@ ko.bindingHandlers.googleMap = {
         value.forEach(function (mapItem) {
             var image = {
                 url: base + mapItem.icon(),
-                // This marker is 20 pixels wide by 32 pixels high.
+                // This marker is 32 pixels wide by 32 pixels high.
                 size: new google.maps.Size(32, 32),
                 // The origin for this image is (0, 0).
                 origin: new google.maps.Point(0, 0),
