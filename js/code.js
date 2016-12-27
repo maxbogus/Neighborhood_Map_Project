@@ -1,5 +1,4 @@
 var base = 'img/';
-var prevInfoWindow = false;
 
 var initialMapObjects = [
     {
@@ -76,14 +75,6 @@ function initMap() {
     ko.applyBindings(new ViewModel());
 }
 
-function openInfoWindow(infowindow, map, marker) {
-    if (prevInfoWindow) {
-        prevInfoWindow.close();
-    }
-
-    prevInfoWindow = infowindow;
-    infowindow.open(map, marker);
-}
 ko.bindingHandlers.googleMap = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
         var value = ko.unwrap(valueAccessor());
@@ -94,6 +85,8 @@ ko.bindingHandlers.googleMap = {
         };
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
+        var infowindow = new google.maps.InfoWindow();
+
         value.forEach(function (mapItem) {
             var image = {
                 url: base + mapItem.icon(),
@@ -129,15 +122,10 @@ ko.bindingHandlers.googleMap = {
                 }
             }
 
-            marker.addListener('click', toggleBounce);
-
-            var infowindow = new google.maps.InfoWindow({
-                content: mapItem.content(),
-                maxWidth: 500
-            });
-
             marker.addListener('click', function () {
-                openInfoWindow(infowindow, map, marker);
+                toggleBounce();
+                infowindow.setContent(mapItem.content());
+                infowindow.open(map, this);
             });
         });
     }, update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
@@ -148,6 +136,7 @@ ko.bindingHandlers.googleMap = {
             zoom: 9
         };
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        var infowindow = new google.maps.InfoWindow();
 
         value.forEach(function (mapItem) {
             var latLng = new google.maps.LatLng(
@@ -184,22 +173,17 @@ ko.bindingHandlers.googleMap = {
                 }
             }
 
-            marker.addListener('click', toggleBounce);
-
-            var infowindow = new google.maps.InfoWindow({
-                content: mapItem.content(),
-                maxWidth: 500
-            });
-
             if (viewModel.bounceObject() !== null) {
                 if (viewModel.bounceObject().name() === mapItem.name()) {
                     toggleBounce();
-                    openInfoWindow(infowindow, map, marker);
+                    infowindow.setContent(mapItem.content())
                 }
             }
 
             marker.addListener('click', function () {
-                openInfoWindow(infowindow, map, marker);
+                toggleBounce();
+                infowindow.setContent(mapItem.content());
+                infowindow.open(map, this);
             });
         });
     }
