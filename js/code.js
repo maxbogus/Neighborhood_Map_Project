@@ -1,14 +1,5 @@
-// Check if google maps are loaded.
-if (typeof google === 'object' && typeof google.maps === 'object') {
-    alert('oops');
-} else {
-    console.log('gooogd')
-}
-
 // base dir for images
 var base = 'img/';
-// param to check if infowindow is already opened
-var prev_infowindow = false;
 
 //objects we are showing in list and on map
 // name - name of object
@@ -82,6 +73,10 @@ var initialMapObjects = [
     }
 ];
 
+function checkGoogleMaps() {
+    alert("Couldn't connect to Google Maps!");
+}
+
 function initMap() {
     ko.applyBindings(new ViewModel());
 }
@@ -98,10 +93,12 @@ ko.bindingHandlers.googleMap = {
         };
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
+        var infowindow = new google.maps.InfoWindow();
+
         value.forEach(function (mapItem) {
             var image = {
                 url: base + mapItem.icon(),
-                // This marker is 20 pixels wide by 32 pixels high.
+                // This marker is 32 pixels wide by 32 pixels high.
                 size: new google.maps.Size(32, 32),
                 // The origin for this image is (0, 0).
                 origin: new google.maps.Point(0, 0),
@@ -123,30 +120,20 @@ ko.bindingHandlers.googleMap = {
                 viewModel.request(mapItem.name());
                 marker.setAnimation(null);
 
-                if (marker.getAnimation() != null) {
+                if (marker.getAnimation() !== null) {
                     marker.setAnimation(null);
                 } else {
                     marker.setAnimation(google.maps.Animation.BOUNCE);
                     setTimeout(function () {
                         marker.setAnimation(null);
-                    }, 900);
+                    }, 700);
                 }
             }
 
-            marker.addListener('click', toggleBounce);
-
-            var infowindow = new google.maps.InfoWindow({
-                content: mapItem.content(),
-                maxWidth: 500
-            });
-
             marker.addListener('click', function () {
-                if (prev_infowindow) {
-                    prev_infowindow.close();
-                }
-
-                prev_infowindow = infowindow;
-                infowindow.open(map, marker);
+                toggleBounce();
+                infowindow.setContent(mapItem.content());
+                infowindow.open(map, this);
             });
         });
     // functionality to work after update.
@@ -158,6 +145,7 @@ ko.bindingHandlers.googleMap = {
             zoom: 9
         };
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        var infowindow = new google.maps.InfoWindow();
 
         value.forEach(function (mapItem) {
             var latLng = new google.maps.LatLng(
@@ -184,38 +172,27 @@ ko.bindingHandlers.googleMap = {
                 viewModel.request(mapItem.name());
                 marker.setAnimation(null);
 
-                if (marker.getAnimation() != null) {
+                if (marker.getAnimation() !== null) {
                     marker.setAnimation(null);
                 } else {
                     marker.setAnimation(google.maps.Animation.BOUNCE);
                     setTimeout(function () {
                         marker.setAnimation(null);
-                    }, 900);
+                    }, 700);
                 }
             }
-
-            marker.addListener('click', toggleBounce);
-
-            var infowindow = new google.maps.InfoWindow({
-                content: mapItem.content(),
-                maxWidth: 500
-            });
 
             if (viewModel.bounceObject() !== null) {
                 if (viewModel.bounceObject().name() === mapItem.name()) {
                     toggleBounce();
-                    infowindow.open(map, marker);
+                    infowindow.setContent(mapItem.content())
                 }
             }
 
-
             marker.addListener('click', function () {
-                if (prev_infowindow) {
-                    prev_infowindow.close();
-                }
-
-                prev_infowindow = infowindow;
-                infowindow.open(map, marker);
+                toggleBounce();
+                infowindow.setContent(mapItem.content());
+                infowindow.open(map, this);
             });
         });
     }
@@ -242,7 +219,7 @@ var ViewModel = function () {
     this.bounceObject = ko.observable(null);
 
     self.toggleBounce = function (object) {
-        self.bounceObject(object)
+        self.bounceObject(object);
     };
 
     this.showMessage = ko.observable(false);
@@ -257,8 +234,8 @@ var ViewModel = function () {
     // error is for error message.
     this.request = function (name) {
         $.ajax({
-            url: '//en.wikipedia.org/w/api.php?action=opensearch&search='
-            + encodeURI(name) + '&format=json&callback=?',
+            url: 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' +
+            encodeURI(name) + '&format=json&callback=?',
             dataType: 'jsonp',
             async: true,
             type: 'GET',
@@ -281,7 +258,7 @@ var ViewModel = function () {
     };
 
     initialMapObjects.forEach(function (mapItem) {
-        self.mapObjectList.push(new MapObject(mapItem))
+        self.mapObjectList.push(new MapObject(mapItem));
     });
 
     this.clearFilter = function () {
@@ -291,7 +268,7 @@ var ViewModel = function () {
     };
 
     this.currentList = ko.computed(function () {
-        return self.filteredMapObjectList().length == 0 ? self.mapObjectList() : self.filteredMapObjectList();
+        return self.filteredMapObjectList().length === 0 ? self.mapObjectList() : self.filteredMapObjectList();
     });
 
     // filter markers in list

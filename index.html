@@ -12,49 +12,59 @@
     <link rel='shortcut icon' href='img/favicon.png' type='image/x-icon'>
 </head>
 <body>
-<div class="container">
+<header>
     <div class="row">
         <h2 class="text-center">Neighborhood Map</h2>
     </div>
+</header>
+<div class="container">
     <br>
     <div class="row">
-        <div class="col-xs-12 col-sm-4">
-            <form class="form-inline ">
-                <div class="form-group">
-                    <label class="sr-only">Search</label>
-                    <input type="search" class="form-control" id="search" placeholder="Search"
-                           data-bind="textInput: userInput"/>
-                    <button type="submit" class="btn btn-default" data-bind="click: filterMarkers">Search</button>
-                    <button type="submit" class="btn btn-default" data-bind="click: clearFilter">Clear</button>
+        <aside>
+            <div class="col-xs-12 col-sm-4">
+                <form class="form-inline ">
+                    <div class="form-group">
+                        <label class="sr-only">Search</label>
+                        <input type="search" class="form-control" id="search" placeholder="Search"
+                               data-bind="textInput: userInput"/>
+                        <button type="submit" class="btn btn-default" data-bind="click: filterMarkers">Search</button>
+                        <button type="submit" class="btn btn-default" data-bind="click: clearFilter">Clear</button>
+                    </div>
+                    <div data-bind="visible: hasError">
+                        <br>
+                        <div class="alert alert-danger" role="alert"
+                             data-bind="text: error, click: function(){ this.hasError(false) }"></div>
+                    </div>
+                </form>
+                <br>
+                <div class="list-group " data-bind="foreach: currentList">
+                    <button type="button" class="list-group-item"
+                            data-bind="text: name, click: $parent.bounceObject"></button>
                 </div>
-                <div data-bind="visible: hasError">
-                    <br>
-                    <div class="alert alert-danger" role="alert"
-                         data-bind="text: error, click: function(){ this.hasError(false) }"></div>
-                </div>
-            </form>
-            <br>
-            <div class="list-group " data-bind="foreach: currentList">
-                <button type="button" class="list-group-item" data-bind="text: name, click: $parent.bounceObject"></button>
             </div>
-        </div>
-        <div id="map" class="col-sm-8" data-bind="googleMap: currentList"></div>
+        </aside>
+        <main>
+            <div id="map" class="col-sm-8" data-bind="googleMap: currentList"></div>
+        </main>
     </div>
     <br>
     <div class="row">
-        <ul class="list-group" data-bind="foreach: additionalInfo">
-            <a class="list-group-item" data-bind="attr: {href: $data.url}, text: $data.wikientry"></a>
-        </ul>
-        <div class="alert alert-info" role="alert"
-             data-bind="text: message, visible: showMessage, click: function(){ this.showMessage(false) }"></div>
+        <section>
+
+            <ul class="list-group" data-bind="foreach: additionalInfo">
+                <a class="list-group-item" data-bind="attr: {href: $data.url}, text: $data.wikientry"></a>
+            </ul>
+            <div class="alert alert-info" role="alert"
+                 data-bind="text: message, visible: showMessage, click: function(){ this.showMessage(false) }"></div>
+        </section>
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script type='text/javascript' src='js/bootstrap.min.js'></script>
-<script type='text/javascript' src='js/knockout.js'></script>
+<script src='js/bootstrap.min.js'></script>
+<script src='js/knockout.js'></script>
 <script src="js/code.js"></script>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMyapRXCm3PwBfbS2YGoE4Op-s9-l_bS4&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMyapRXCm3PwBfbS2YGoE4Op-s9-l_bS4&callback=initMap" onerror="checkGoogleMaps()">
 </script>
 </body>
 </html>
