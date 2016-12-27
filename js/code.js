@@ -236,7 +236,7 @@ var ViewModel = function () {
 
     this.request = function (name) {
         $.ajax({
-            url: '//en.wikipedia.org/w/api.php?action=opensearch&search=' +
+            url: 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' +
             encodeURI(name) + '&format=json&callback=?',
             dataType: 'jsonp',
             async: true,
