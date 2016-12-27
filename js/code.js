@@ -107,13 +107,13 @@ ko.bindingHandlers.googleMap = {
                 viewModel.request(mapItem.name());
                 marker.setAnimation(null);
 
-                if (marker.getAnimation() != null) {
+                if (marker.getAnimation() !== null) {
                     marker.setAnimation(null);
                 } else {
                     marker.setAnimation(google.maps.Animation.BOUNCE);
                     setTimeout(function () {
                         marker.setAnimation(null);
-                    }, 900);
+                    }, 700);
                 }
             }
 
@@ -167,13 +167,13 @@ ko.bindingHandlers.googleMap = {
                 viewModel.request(mapItem.name());
                 marker.setAnimation(null);
 
-                if (marker.getAnimation() != null) {
+                if (marker.getAnimation() !== null) {
                     marker.setAnimation(null);
                 } else {
                     marker.setAnimation(google.maps.Animation.BOUNCE);
                     setTimeout(function () {
                         marker.setAnimation(null);
-                    }, 900);
+                    }, 700);
                 }
             }
 
@@ -225,7 +225,7 @@ var ViewModel = function () {
     this.bounceObject = ko.observable(null);
 
     self.toggleBounce = function (object) {
-        self.bounceObject(object)
+        self.bounceObject(object);
     };
 
     this.showMessage = ko.observable(false);
@@ -235,8 +235,8 @@ var ViewModel = function () {
 
     this.request = function (name) {
         $.ajax({
-            url: '//en.wikipedia.org/w/api.php?action=opensearch&search='
-            + encodeURI(name) + '&format=json&callback=?',
+            url: '//en.wikipedia.org/w/api.php?action=opensearch&search=' +
+            encodeURI(name) + '&format=json&callback=?',
             dataType: 'jsonp',
             async: true,
             type: 'GET',
@@ -260,7 +260,7 @@ var ViewModel = function () {
     };
 
     initialMapObjects.forEach(function (mapItem) {
-        self.mapObjectList.push(new MapObject(mapItem))
+        self.mapObjectList.push(new MapObject(mapItem));
     });
 
     this.clearFilter = function () {
@@ -270,7 +270,7 @@ var ViewModel = function () {
     };
 
     this.currentList = ko.computed(function () {
-        return self.filteredMapObjectList().length == 0 ? self.mapObjectList() : self.filteredMapObjectList();
+        return self.filteredMapObjectList().length === 0 ? self.mapObjectList() : self.filteredMapObjectList();
     });
 
     this.filterMarkers = function () {
@@ -288,14 +288,3 @@ var ViewModel = function () {
         }
     };
 };
-//
-// $.ajax({
-//     type: "GET",
-//     dataType: 'jsonp',
-//     url: "https://maps.googleapis.com/",
-//     success: function (data, status, xhr) {
-//     },
-//     error: function (xhr, status, error) {
-//         alert('Sorry man. No map for you!');
-//     }
-// });

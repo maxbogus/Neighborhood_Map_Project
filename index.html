@@ -35,7 +35,8 @@
             </form>
             <br>
             <div class="list-group " data-bind="foreach: currentList">
-                <button type="button" class="list-group-item" data-bind="text: name, click: $parent.bounceObject"></button>
+                <button type="button" class="list-group-item"
+                        data-bind="text: name, click: $parent.bounceObject"></button>
             </div>
         </div>
         <div id="map" class="col-sm-8" data-bind="googleMap: currentList"></div>
@@ -50,8 +51,8 @@
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script type='text/javascript' src='js/bootstrap.min.js'></script>
-<script type='text/javascript' src='js/knockout.js'></script>
+<script src='js/bootstrap.min.js'></script>
+<script src='js/knockout.js'></script>
 <script src="js/code.js"></script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMyapRXCm3PwBfbS2YGoE4Op-s9-l_bS4&callback=initMap">
