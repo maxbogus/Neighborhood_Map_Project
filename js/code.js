@@ -97,7 +97,7 @@ ko.bindingHandlers.googleMap = {
 
         value.forEach(function (mapItem) {
             var image = {
-                url: base + mapItem.icon(),
+                url: base + mapItem.icon,
                 // This marker is 32 pixels wide by 32 pixels high.
                 size: new google.maps.Size(32, 32),
                 // The origin for this image is (0, 0).
@@ -107,17 +107,16 @@ ko.bindingHandlers.googleMap = {
             };
 
             var latLng = new google.maps.LatLng(
-                mapItem.coordinates().lat,
-                mapItem.coordinates().lng);
+                mapItem.coordinates.lat,
+                mapItem.coordinates.lng);
             var marker = new google.maps.Marker({
                 position: latLng,
-                draggable: true,
                 map: map,
                 icon: image
             });
 
             function toggleBounce() {
-                viewModel.request(mapItem.name());
+                viewModel.request(mapItem.name);
                 marker.setAnimation(null);
 
                 if (marker.getAnimation() !== null) {
@@ -132,11 +131,11 @@ ko.bindingHandlers.googleMap = {
 
             marker.addListener('click', function () {
                 toggleBounce();
-                infowindow.setContent(mapItem.content());
+                infowindow.setContent(mapItem.content);
                 infowindow.open(map, this);
             });
         });
-    // functionality to work after update.
+        // functionality to work after update.
     }, update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
         var value = ko.unwrap(valueAccessor());
         var mapOptions = {
@@ -149,10 +148,10 @@ ko.bindingHandlers.googleMap = {
 
         value.forEach(function (mapItem) {
             var latLng = new google.maps.LatLng(
-                mapItem.coordinates().lat,
-                mapItem.coordinates().lng);
+                mapItem.coordinates.lat,
+                mapItem.coordinates.lng);
             var image = {
-                url: base + mapItem.icon(),
+                url: base + mapItem.icon,
                 // This marker is 20 pixels wide by 32 pixels high.
                 size: new google.maps.Size(32, 32),
                 // The origin for this image is (0, 0).
@@ -163,13 +162,12 @@ ko.bindingHandlers.googleMap = {
 
             var marker = new google.maps.Marker({
                 position: latLng,
-                draggable: true,
                 map: map,
                 icon: image
             });
 
             function toggleBounce() {
-                viewModel.request(mapItem.name());
+                viewModel.request(mapItem.name);
                 marker.setAnimation(null);
 
                 if (marker.getAnimation() !== null) {
@@ -183,15 +181,15 @@ ko.bindingHandlers.googleMap = {
             }
 
             if (viewModel.bounceObject() !== null) {
-                if (viewModel.bounceObject().name() === mapItem.name()) {
+                if (viewModel.bounceObject().name === mapItem.name) {
                     toggleBounce();
-                    infowindow.setContent(mapItem.content())
+                    infowindow.setContent(mapItem.content)
                 }
             }
 
             marker.addListener('click', function () {
                 toggleBounce();
-                infowindow.setContent(mapItem.content());
+                infowindow.setContent(mapItem.content);
                 infowindow.open(map, this);
             });
         });
@@ -199,10 +197,10 @@ ko.bindingHandlers.googleMap = {
 };
 
 var MapObject = function (data) {
-    this.name = ko.observable(data.name);
-    this.coordinates = ko.observable(data.coordinates);
-    this.content = ko.observable(data.content);
-    this.icon = ko.observable(data.icon);
+    this.name = data.name;
+    this.coordinates = data.coordinates;
+    this.content = data.content;
+    this.icon = data.icon;
 };
 
 var ViewModel = function () {
