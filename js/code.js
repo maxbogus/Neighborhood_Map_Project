@@ -19,7 +19,8 @@ var initialMapObjects = [
         '<li>Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks).</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'bankiru.png'
+        "icon": 'bankiru.png',
+        "visible": true
     },
     {
         "name": "Luxoft",
@@ -31,7 +32,8 @@ var initialMapObjects = [
         '<li>Developed 6 test suites for 6 modules of WIRS system.</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'luxoft.png'
+        "icon": 'luxoft.png',
+        "visible": true
     },
     {
         "name": "Acronis",
@@ -44,7 +46,8 @@ var initialMapObjects = [
         '<li>Found and submitted ~6700 defects.</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'acronis.png'
+        "icon": 'acronis.png',
+        "visible": true
     },
     {
         "name": "Innova",
@@ -57,7 +60,8 @@ var initialMapObjects = [
         '<li>Successful release with low defects (20 bugs) of a new version of 4game platform in Europe and Russia.</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'innova.png'
+        "icon": 'innova.png',
+        "visible": true
     },
     {
         "name": "Superscape",
@@ -69,7 +73,8 @@ var initialMapObjects = [
         '<li>Found ~1200 defects were found and submitted personally (35% of defects could cause hardware defects in the cell phone or major data loss).</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'superscape.png'
+        "icon": 'superscape.png',
+        "visible": true
     }
 ];
 
@@ -115,22 +120,8 @@ ko.bindingHandlers.googleMap = {
                 icon: image
             });
 
-            function toggleBounce() {
-                viewModel.request(mapItem.name);
-                marker.setAnimation(null);
-
-                if (marker.getAnimation() !== null) {
-                    marker.setAnimation(null);
-                } else {
-                    marker.setAnimation(google.maps.Animation.BOUNCE);
-                    setTimeout(function () {
-                        marker.setAnimation(null);
-                    }, 700);
-                }
-            }
-
             marker.addListener('click', function () {
-                toggleBounce();
+                toggleBounce(viewModel, mapItem, marker, google);
                 infowindow.setContent(mapItem.content);
                 infowindow.open(map, this);
             });
@@ -166,29 +157,15 @@ ko.bindingHandlers.googleMap = {
                 icon: image
             });
 
-            function toggleBounce() {
-                viewModel.request(mapItem.name);
-                marker.setAnimation(null);
-
-                if (marker.getAnimation() !== null) {
-                    marker.setAnimation(null);
-                } else {
-                    marker.setAnimation(google.maps.Animation.BOUNCE);
-                    setTimeout(function () {
-                        marker.setAnimation(null);
-                    }, 700);
-                }
-            }
-
             if (viewModel.bounceObject() !== null) {
                 if (viewModel.bounceObject().name === mapItem.name) {
-                    toggleBounce();
-                    infowindow.setContent(mapItem.content)
+                    toggleBounce(viewModel, mapItem, marker, google);
+                    infowindow.setContent(mapItem.content);
                 }
             }
 
             marker.addListener('click', function () {
-                toggleBounce();
+                toggleBounce(viewModel, mapItem, marker, google);
                 infowindow.setContent(mapItem.content);
                 infowindow.open(map, this);
             });
@@ -196,11 +173,26 @@ ko.bindingHandlers.googleMap = {
     }
 };
 
+function toggleBounce(viewModel, mapItem, marker, google) {
+    viewModel.request(mapItem.name);
+    marker.setAnimation(null);
+
+    if (marker.getAnimation() !== null) {
+        marker.setAnimation(null);
+    } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function () {
+            marker.setAnimation(null);
+        }, 700);
+    }
+}
+
 var MapObject = function (data) {
     this.name = data.name;
     this.coordinates = data.coordinates;
     this.content = data.content;
     this.icon = data.icon;
+    this.visible = data.visible;
 };
 
 var ViewModel = function () {

@@ -39,7 +39,7 @@
                 <br>
                 <div class="list-group " data-bind="foreach: currentList">
                     <button type="button" class="list-group-item"
-                            data-bind="text: name, click: $parent.bounceObject"></button>
+                            data-bind="text: name, click: $parent.bounceObject; visible: visible"></button>
                 </div>
             </div>
         </aside>
@@ -50,7 +50,6 @@
     <br>
     <div class="row">
         <section>
-
             <ul class="list-group" data-bind="foreach: additionalInfo">
                 <a class="list-group-item" data-bind="attr: {href: $data.url}, text: $data.wikientry"></a>
             </ul>
