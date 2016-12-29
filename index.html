@@ -37,14 +37,14 @@
                     </div>
                 </form>
                 <br>
-                <div class="list-group " data-bind="foreach: currentList">
+                <div class="list-group " data-bind="foreach: mapObjectList">
                     <button type="button" class="list-group-item"
                             data-bind="text: name, click: $parent.bounceObject; visible: visible"></button>
                 </div>
             </div>
         </aside>
         <main>
-            <div id="map" class="col-sm-8" data-bind="googleMap: currentList"></div>
+            <div id="map" class="col-sm-8" data-bind="googleMap"></div>
         </main>
     </div>
     <br>
