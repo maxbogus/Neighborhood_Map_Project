@@ -90,7 +90,6 @@ function initMap() {
 ko.bindingHandlers.googleMap = {
     // init map, markers and default functionality
     init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-        var value = ko.unwrap(valueAccessor());
         var mapOptions = {
             center: new google.maps.LatLng(
                 55.752198, 37.617499),
@@ -100,7 +99,7 @@ ko.bindingHandlers.googleMap = {
 
         var infowindow = new google.maps.InfoWindow();
 
-        value.forEach(function (mapItem) {
+        initialMapObjects.forEach(function (mapItem) {
             var image = {
                 url: base + mapItem.icon,
                 // This marker is 32 pixels wide by 32 pixels high.
@@ -114,77 +113,41 @@ ko.bindingHandlers.googleMap = {
             var latLng = new google.maps.LatLng(
                 mapItem.coordinates.lat,
                 mapItem.coordinates.lng);
-            var marker = new google.maps.Marker({
-                position: latLng,
-                map: map,
-                icon: image
-            });
-
-            marker.addListener('click', function () {
-                toggleBounce(viewModel, mapItem, marker, google);
-                infowindow.setContent(mapItem.content);
-                infowindow.open(map, this);
-            });
-        });
-        // functionality to work after update.
-    }, update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-        var value = ko.unwrap(valueAccessor());
-        var mapOptions = {
-            center: new google.maps.LatLng(
-                55.752198, 37.617499),
-            zoom: 9
-        };
-        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-        var infowindow = new google.maps.InfoWindow();
-
-        value.forEach(function (mapItem) {
-            var latLng = new google.maps.LatLng(
-                mapItem.coordinates.lat,
-                mapItem.coordinates.lng);
-            var image = {
-                url: base + mapItem.icon,
-                // This marker is 20 pixels wide by 32 pixels high.
-                size: new google.maps.Size(32, 32),
-                // The origin for this image is (0, 0).
-                origin: new google.maps.Point(0, 0),
-                // The anchor for this image is the base of the flagpole at (0, 32).
-                anchor: new google.maps.Point(0, 32)
-            };
 
             var marker = new google.maps.Marker({
                 position: latLng,
                 map: map,
-                icon: image
+                icon: image,
+                title: mapItem.name
             });
 
-            if (viewModel.bounceObject() !== null) {
-                if (viewModel.bounceObject().name === mapItem.name) {
-                    toggleBounce(viewModel, mapItem, marker, google);
-                    infowindow.setContent(mapItem.content);
+            function toggleBounce() {
+                marker.setAnimation(null);
+
+                if (marker.getAnimation() !== null) {
+                    marker.setAnimation(null);
+                } else {
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                    setTimeout(function () {
+                        marker.setAnimation(null);
+                    }, 700);
                 }
             }
 
             marker.addListener('click', function () {
-                toggleBounce(viewModel, mapItem, marker, google);
+                buildAdditionalInfo(viewModel, marker);
+                toggleBounce(viewModel, marker, google);
                 infowindow.setContent(mapItem.content);
                 infowindow.open(map, this);
             });
+
+            viewModel.markerList().push(marker);
         });
     }
 };
 
-function toggleBounce(viewModel, mapItem, marker, google) {
-    viewModel.request(mapItem.name);
-    marker.setAnimation(null);
-
-    if (marker.getAnimation() !== null) {
-        marker.setAnimation(null);
-    } else {
-        marker.setAnimation(google.maps.Animation.BOUNCE);
-        setTimeout(function () {
-            marker.setAnimation(null);
-        }, 700);
-    }
+function buildAdditionalInfo(viewModel, marker) {
+    viewModel.request(marker.title);
 }
 
 var MapObject = function (data) {
@@ -192,25 +155,35 @@ var MapObject = function (data) {
     this.coordinates = data.coordinates;
     this.content = data.content;
     this.icon = data.icon;
-    this.visible = data.visible;
+    this.visible = ko.observable(data.visible);
 };
 
 var ViewModel = function () {
     var self = this;
 
     this.mapObjectList = ko.observableArray([]);
-    this.filteredMapObjectList = ko.observableArray([]);
 
     this.userInput = ko.observable('');
 
     this.hasError = ko.observable(false);
     this.error = ko.observable('error');
 
+    this.showInList = function(object) {
+        console.log(object.visible());
+        return object.visible();
+    };
+
     this.bounceObject = ko.observable(null);
 
     self.toggleBounce = function (object) {
-        self.bounceObject(object);
+        self.markerList().forEach(function(marker) {
+            if (marker.title.toLowerCase().includes(object.name.toLowerCase())) {
+                toggleBounce(this, marker, google);
+            }
+        });
     };
+
+    this.markerList = ko.observableArray([]);
 
     this.showMessage = ko.observable(false);
     this.message = ko.observable('Please select item to view additional info');
@@ -252,14 +225,10 @@ var ViewModel = function () {
     });
 
     this.clearFilter = function () {
-        this.filteredMapObjectList([]);
         this.userInput('');
         this.hasError(false);
+        this.filterMarkers('');
     };
-
-    this.currentList = ko.computed(function () {
-        return self.filteredMapObjectList().length === 0 ? self.mapObjectList() : self.filteredMapObjectList();
-    });
 
     // filter markers in list
     // on init we are set to default values errors and current filter
@@ -267,16 +236,24 @@ var ViewModel = function () {
     // if no objects are matching we are showing error message
     this.filterMarkers = function () {
         var input = this.userInput().toLowerCase();
-        this.filteredMapObjectList([]);
         this.hasError(false);
-        initialMapObjects.forEach(function (mapItem) {
-            if (mapItem.name.toLowerCase().includes(input)) {
-                self.filteredMapObjectList.push(new MapObject(mapItem));
+        var counter = 0;
+
+        this.markerList().forEach(function (marker) {
+            if (marker.title.toLowerCase().includes(input)) {
+                marker.setVisible(true);
+                counter += 1;
+            } else {
+                marker.setVisible(false);
             }
         });
-        if (self.filteredMapObjectList().length === 0) {
+
+        if (counter === 0) {
             self.hasError(true);
             self.error("User input doesn't match names in list");
         }
     };
 };
+
+//TODO: fix filter
+//TODO: toggle bounce from list
