@@ -16,7 +16,7 @@ var initialMapObjects = [
         '<li>Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks).</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'img/bankiru.png',
+        "icon": 'img/banki-ru-logo-small.png',
         "visible": true
     },
     {
@@ -29,7 +29,7 @@ var initialMapObjects = [
         '<li>Developed 6 test suites for 6 modules of WIRS system.</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'img/luxoft.png',
+        "icon": 'img/luxoft-small.png',
         "visible": true
     },
     {
@@ -43,7 +43,7 @@ var initialMapObjects = [
         '<li>Found and submitted ~6700 defects.</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'img/acronis.png',
+        "icon": 'img/Acronis_logo-small.png',
         "visible": true
     },
     {
@@ -57,7 +57,7 @@ var initialMapObjects = [
         '<li>Successful release with low defects (20 bugs) of a new version of 4game platform in Europe and Russia.</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'img/innova.png',
+        "icon": 'img/4game-small.png',
         "visible": true
     },
     {
@@ -70,7 +70,7 @@ var initialMapObjects = [
         '<li>Found ~1200 defects were found and submitted personally (35% of defects could cause hardware defects in the cell phone or major data loss).</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'img/superscape.png',
+        "icon": 'img/superscape-small.png',
         "visible": true
     }
 ];
