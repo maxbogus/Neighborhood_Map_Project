@@ -39,7 +39,7 @@
                 <br>
                 <div class="list-group" data-bind="foreach: mapObjectList">
                     <button type="button" class="list-group-item"
-                            data-bind="text: name, visible: visible"></button>
+                            data-bind="text: name, click: $parent.toggleBounce, visible: visible"></button>
                 </div>
             </div>
         </aside>

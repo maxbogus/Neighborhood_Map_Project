@@ -1,6 +1,3 @@
-// base dir for images
-var base = 'img/';
-
 //objects we are showing in list and on map
 // name - name of object
 // coord - latitude and longitude of object
@@ -19,7 +16,7 @@ var initialMapObjects = [
         '<li>Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks).</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'bankiru.png',
+        "icon": 'img/bankiru.png',
         "visible": true
     },
     {
@@ -32,7 +29,7 @@ var initialMapObjects = [
         '<li>Developed 6 test suites for 6 modules of WIRS system.</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'luxoft.png',
+        "icon": 'img/luxoft.png',
         "visible": true
     },
     {
@@ -46,7 +43,7 @@ var initialMapObjects = [
         '<li>Found and submitted ~6700 defects.</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'acronis.png',
+        "icon": 'img/acronis.png',
         "visible": true
     },
     {
@@ -60,7 +57,7 @@ var initialMapObjects = [
         '<li>Successful release with low defects (20 bugs) of a new version of 4game platform in Europe and Russia.</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'innova.png',
+        "icon": 'img/innova.png',
         "visible": true
     },
     {
@@ -73,7 +70,7 @@ var initialMapObjects = [
         '<li>Found ~1200 defects were found and submitted personally (35% of defects could cause hardware defects in the cell phone or major data loss).</li></ul>' +
         '</div>' +
         '</div>',
-        "icon": 'superscape.png',
+        "icon": 'img/superscape.png',
         "visible": true
     }
 ];
@@ -101,7 +98,7 @@ ko.bindingHandlers.googleMap = {
 
         initialMapObjects.forEach(function (mapItem) {
             var image = {
-                url: base + mapItem.icon,
+                url: mapItem.icon,
                 // This marker is 32 pixels wide by 32 pixels high.
                 size: new google.maps.Size(32, 32),
                 // The origin for this image is (0, 0).
@@ -121,7 +118,7 @@ ko.bindingHandlers.googleMap = {
                 title: mapItem.name
             });
 
-            function toggleBounce() {
+            marker.toggleBounce = function () {
                 marker.setAnimation(null);
 
                 if (marker.getAnimation() !== null) {
@@ -132,23 +129,28 @@ ko.bindingHandlers.googleMap = {
                         marker.setAnimation(null);
                     }, 700);
                 }
-            }
+            };
 
-            marker.addListener('click', function () {
-                buildAdditionalInfo(viewModel, marker);
-                toggleBounce(viewModel, marker, google);
+            marker.buildAdditionalInfo = function () {
+                viewModel.request(marker.title);
+            };
+
+            marker.openInfoWindow = function () {
+                marker.buildAdditionalInfo();
+                marker.toggleBounce();
                 infowindow.setContent(mapItem.content);
                 infowindow.open(map, this);
+            };
+
+            marker.addListener('click', function () {
+                marker.openInfoWindow();
             });
 
             viewModel.markerList().push(marker);
+            mapItem.marker = marker;
         });
     }
 };
-
-function buildAdditionalInfo(viewModel, marker) {
-    viewModel.request(marker.title);
-}
 
 var MapObject = function (data) {
     this.name = ko.observable(data.name);
@@ -203,13 +205,24 @@ var ViewModel = function () {
     };
 
     initialMapObjects.forEach(function (mapItem) {
-        self.mapObjectList.push(new MapObject(mapItem));
+        self.mapObjectList().push(new MapObject(mapItem));
     });
 
+    // clear filter, reset input and error.
     this.clearFilter = function () {
         this.userInput('');
         this.hasError(false);
         this.filterMarkers('');
+    };
+
+    // bounce matching marker and open infowindow
+    this.toggleBounce = function () {
+        var name = this.name().toLowerCase();
+        self.markerList().forEach(function (marker) {
+            if (marker.title.toLowerCase().includes(name)) {
+                marker.openInfoWindow();
+            }
+        });
     };
 
     // filter markers in list
@@ -238,5 +251,3 @@ var ViewModel = function () {
         }
     };
 };
-
-//TODO: toggle bounce from list
