@@ -37,9 +37,9 @@
                     </div>
                 </form>
                 <br>
-                <div class="list-group " data-bind="foreach: mapObjectList">
+                <div class="list-group" data-bind="foreach: mapObjectList">
                     <button type="button" class="list-group-item"
-                            data-bind="text: name, click: $parent.bounceObject; visible: visible"></button>
+                            data-bind="text: name, visible: visible"></button>
                 </div>
             </div>
         </aside>
@@ -63,7 +63,8 @@
 <script src='js/knockout.js'></script>
 <script src="js/code.js"></script>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMyapRXCm3PwBfbS2YGoE4Op-s9-l_bS4&callback=initMap" onerror="checkGoogleMaps()">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMyapRXCm3PwBfbS2YGoE4Op-s9-l_bS4&callback=initMap"
+        onerror="checkGoogleMaps()">
 </script>
 </body>
 </html>

@@ -151,10 +151,7 @@ function buildAdditionalInfo(viewModel, marker) {
 }
 
 var MapObject = function (data) {
-    this.name = data.name;
-    this.coordinates = data.coordinates;
-    this.content = data.content;
-    this.icon = data.icon;
+    this.name = ko.observable(data.name);
     this.visible = ko.observable(data.visible);
 };
 
@@ -168,21 +165,6 @@ var ViewModel = function () {
     this.hasError = ko.observable(false);
     this.error = ko.observable('error');
 
-    this.showInList = function(object) {
-        console.log(object.visible());
-        return object.visible();
-    };
-
-    this.bounceObject = ko.observable(null);
-
-    self.toggleBounce = function (object) {
-        self.markerList().forEach(function(marker) {
-            if (marker.title.toLowerCase().includes(object.name.toLowerCase())) {
-                toggleBounce(this, marker, google);
-            }
-        });
-    };
-
     this.markerList = ko.observableArray([]);
 
     this.showMessage = ko.observable(false);
@@ -193,7 +175,7 @@ var ViewModel = function () {
     // request to mediawiki send when info balloon is clicked
     // url - is url where we sending request
     // dataType is for Cross-domain requests
-    // success if for dealing with recieved data (we are creating a list of links)
+    // success if for dealing with received data (we are creating a list of links)
     // error is for error message.
     this.request = function (name) {
         $.ajax({
@@ -240,12 +222,14 @@ var ViewModel = function () {
         var counter = 0;
 
         this.markerList().forEach(function (marker) {
-            if (marker.title.toLowerCase().includes(input)) {
-                marker.setVisible(true);
-                counter += 1;
-            } else {
-                marker.setVisible(false);
-            }
+            var result = marker.title.toLowerCase().includes(input);
+            marker.setVisible(result);
+            counter += 1;
+        });
+
+        this.mapObjectList().forEach(function (mapObject) {
+            var result = mapObject.name().toLowerCase().includes(input);
+            mapObject.visible(result);
         });
 
         if (counter === 0) {
@@ -255,5 +239,4 @@ var ViewModel = function () {
     };
 };
 
-//TODO: fix filter
 //TODO: toggle bounce from list
