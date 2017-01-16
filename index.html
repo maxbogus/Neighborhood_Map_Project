@@ -58,12 +58,16 @@
         </section>
     </div>
 </div>
-<script id="template" type="text/html">
+<script id="template" type="text/x-handlebars-template">
     <div>
-        <h1 class="firstHeading">{title}</h1>
-        <div id="bodyContent">
-            <p><b>{subtitle}</b></p>
-            <ul>{items}</ul>
+        <h1>{{{title}}}</h1>
+        <div>
+            <p><b>{{{subtitle}}}</b></p>
+            <ul>
+                {{#each items}}
+                <li>{{this}}</li>
+                {{/each}}
+            </ul>
         </div>
     </div>
 </script>
