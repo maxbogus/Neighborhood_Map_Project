@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "grunt-responsive-images": "^0.1.6",
+    "handlebars": "^4.0.6",
     "jquery": "^3.1.1",
     "knockout": "^3.4.1"
   }

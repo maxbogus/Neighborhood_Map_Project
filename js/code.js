@@ -17,7 +17,15 @@ var initialMapObjects = [
         '</div>' +
         '</div>',
         "icon": 'img/banki-ru-logo-small.png',
-        "visible": true
+        "visible": true,
+        "data": {
+            "title": "Banki.ru",
+            "subtitle": "Head of Quality Assurance:",
+            "items": ["Responsible for hiring and managing of two groups of testers: local (5 people) and two remote teams.",
+                "Created department from ‘scratch’ in two years and developed processes to support department goals.",
+                "Realized and implemented a semi-automatic solution that enables the Smoke-testing of more than 900 pages of our website in 5 minutes.",
+                "Reduced software development time in the final stages by an average of 40-50% (1 month to 2 weeks)."]
+        }
     },
     {
         "name": "Luxoft",

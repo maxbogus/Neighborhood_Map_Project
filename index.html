@@ -58,9 +58,19 @@
         </section>
     </div>
 </div>
+<script id="template" type="text/html">
+    <div>
+        <h1 class="firstHeading">{title}</h1>
+        <div id="bodyContent">
+            <p><b>{subtitle}</b></p>
+            <ul>{items}</ul>
+        </div>
+    </div>
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src='js/bootstrap.min.js'></script>
 <script src='js/knockout.js'></script>
+<script src="js/handlebars-v4.0.5.js"></script>
 <script src="js/code.js"></script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMyapRXCm3PwBfbS2YGoE4Op-s9-l_bS4&callback=initMap"
